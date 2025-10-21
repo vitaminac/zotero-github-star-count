@@ -205,7 +205,7 @@ $__ghstar.app = {
    */
   __noData: 'NoCitationData',
   /**
-   * Default String search in Google Scholar,
+   * Default String search in Github API,
    * will override based on locale
    * @private
    */
@@ -559,13 +559,13 @@ $__ghstar.app = {
       $__ghstar.debugger.info(`Min: ${queueMinWaitMs} Max: ${queueMaxWaitMs}`);
     }
 
-    // we need to validate if the Google Scholar URL setting is sane
+    // we need to validate if the Github API URL setting is sane
     // otherwise we risk DDoS'ing the user with alerts
     const apiEndpoint = await this.getApiEndpoint();
     if (!apiEndpoint) {
       // we threw the error to the user, bail on any other work
       $__ghstar.debugger.error(
-        `Google Scholar URL is malformed in Settings, stopping work.`,
+        `Github API URL is malformed in Settings, stopping work.`,
       );
       return;
     }
@@ -704,13 +704,13 @@ $__ghstar.app = {
         break;
       default:
         $__ghstar.debugger.error(
-          `Google Scholar fetch failed for item: ${targetUrl}`,
+          `Github API fetch failed for item: ${targetUrl}`,
         );
         break;
     }
   },
   /**
-   * Validate and return the Google Scholar URL API target
+   * Validate and return the Github API URL API target
    * @returns {URL|null}
    */
   getApiEndpoint: async function () {

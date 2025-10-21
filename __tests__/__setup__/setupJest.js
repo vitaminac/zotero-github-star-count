@@ -58,7 +58,7 @@ global.window.MozXULElement = {
   insertFTLIfNeeded: () => {},
 };
 
-// cheeky, but we're not testing Google Scholar here
+// cheeky, but we're not testing Github API here
 global.XMLHttpRequest = jest.fn().mockImplementation(() => {
   return {
     readyState: 4,

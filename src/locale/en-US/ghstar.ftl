@@ -11,6 +11,6 @@ ghstar-lackPermissions = You lack the permission to make edit to this library.
 ghstar-unSupportedEntryType = Updating citations for this type of entry is not supported.
 ghstar-unSupportedGroupCollection =
   .label = Updating a Group is not yet implemented.
-ghstar-invalidGoogleScholarURL = The Google Scholar URL appears malformed; please check "Settings > Github stars count" to verify your Google Scholar URL.
+ghstar-invalidGoogleScholarURL = The Github API URL appears malformed; please check "Settings > Github stars count" to verify your Github API URL.
 ghstar-progresswindow-title = Github Star Count Updated
 ghstar-progresswindow-desc = Citation Total

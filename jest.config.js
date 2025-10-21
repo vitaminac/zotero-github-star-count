@@ -3,6 +3,8 @@
  * https://jestjs.io/docs/configuration
  */
 
+process.env.TZ = 'UTC';
+
 export default {
   collectCoverage: true,
 

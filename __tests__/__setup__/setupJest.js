@@ -1,4 +1,3 @@
-process.env.TZ = 'UTC';
 jest.setTimeout(60000);
 
 global.Zotero = {

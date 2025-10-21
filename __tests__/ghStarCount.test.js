@@ -10,7 +10,6 @@ const itemsList = require('./__data__/zoteroItemsList.js');
 const extraFieldTester = require('./__data__/extraFieldExtractorData.js');
 
 window.alert = jest.fn();
-jest.useRealTimers();
 
 describe('Verify $__ghstar.app sanity', () => {
   beforeEach(() => {
@@ -171,7 +170,7 @@ describe('Verify $__ghstar.app sanity', () => {
     expect(citeCount).toBe(1000);
 
     const lastUpdated = base.$__ghstar.app.setColumnData(item, 'lastUpdated');
-    expect(lastUpdated).toBe('1/1/2025, 1:00:00 AM');
+    expect(lastUpdated).toBe('1/1/2025, 12:00:00 AM');
 
     const relevanceScore = base.$__ghstar.app.setColumnData(
       item,

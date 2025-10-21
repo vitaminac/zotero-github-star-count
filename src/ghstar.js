@@ -37,9 +37,9 @@
 
 Components.utils.import('resource://gre/modules/Services.jsm');
 
-$__gscc = {};
+$__ghstar = {};
 
-$__gscc.debugger = {
+$__ghstar.debugger = {
   /**
    * Print an info message to the console
    * @param {string} message
@@ -69,12 +69,12 @@ $__gscc.debugger = {
    * @param {object} stack
    */
   __debugMessage: function (message, level = 3, maxDepth = 5, stack = null) {
-    const prependMessage = `[GSCC]: ${message}`;
+    const prependMessage = `[GHSTAR]: ${message}`;
     Zotero.Debug.log(prependMessage, level, maxDepth, stack);
   },
 };
 
-$__gscc.util = {
+$__ghstar.util = {
   /**
    * A method to sleep via setTimeout/promise
    * @async
@@ -91,7 +91,7 @@ $__gscc.util = {
    * @returns
    */
   request: async function (opts) {
-    $__gscc.debugger.info(`${opts.method} ${opts.url}`);
+    $__ghstar.debugger.info(`${opts.method} ${opts.url}`);
     return new Promise((resolve) => {
       const xhr = new XMLHttpRequest();
       xhr.open(opts.method, opts.url);
@@ -159,7 +159,7 @@ $__gscc.util = {
     const window = Zotero.getMainWindow();
 
     const alertMessage = await window.document.l10n.formatValue(
-      'gscc-recapatcha-alert',
+      'ghstar-recapatcha-alert',
     );
     window.alert(alertMessage);
 
@@ -167,11 +167,11 @@ $__gscc.util = {
 
     const checkWindowClosed = (modalWindowHandle, resolve) => {
       if (modalWindowHandle?.closed) {
-        $__gscc.debugger.info('recaptcha window closed');
+        $__ghstar.debugger.info('recaptcha window closed');
         clearInterval(intervalWindowCloseState);
         resolve();
       } else {
-        $__gscc.debugger.info(`waiting for recaptcha user complete...`);
+        $__ghstar.debugger.info(`waiting for recaptcha user complete...`);
       }
     };
 
@@ -183,7 +183,7 @@ $__gscc.util = {
   },
 };
 
-$__gscc.app = {
+$__ghstar.app = {
   /**
    * The overall length of the citation count
    * @private
@@ -193,7 +193,7 @@ $__gscc.app = {
    * The string prefix for the citation count
    * @private
    */
-  __extraEntryPrefix: 'GSCC',
+  __extraEntryPrefix: 'GHSTAR',
   /**
    * The string append for the citation count
    * @private
@@ -252,9 +252,9 @@ $__gscc.app = {
     this.rootURI = rootURI;
 
     // sanity
-    $__gscc.app.__initialized = true;
+    $__ghstar.app.__initialized = true;
 
-    $__gscc.debugger.info(`Init() Complete! ${this.rootURI}`);
+    $__ghstar.debugger.info(`Init() Complete! ${this.rootURI}`);
   },
 
   main: async function () {
@@ -271,48 +271,48 @@ $__gscc.app = {
    * @returns Zotero.ProgressWindow
    */
   getProgressWindow: function () {
-    if (!$__gscc.app.progressWindow) {
-      $__gscc.app.progressWindow = new Zotero.ProgressWindow();
+    if (!$__ghstar.app.progressWindow) {
+      $__ghstar.app.progressWindow = new Zotero.ProgressWindow();
     }
-    return $__gscc.app.progressWindow;
+    return $__ghstar.app.progressWindow;
   },
 
   addToWindow: async function (window) {
     const doc = window.document;
 
     // Fluent for localization
-    window.MozXULElement.insertFTLIfNeeded('gscc.ftl');
+    window.MozXULElement.insertFTLIfNeeded('ghstar.ftl');
 
     const XUL_NS =
       'http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul';
 
     // Add menu option
     const menuitem = doc.createElementNS(XUL_NS, 'menuitem');
-    menuitem.id = 'gscc-get-count';
+    menuitem.id = 'ghstar-get-count';
     menuitem.classList.add(
       'menuitem-iconic',
       'zotero-menuitem-retrieve-metadata',
     );
-    menuitem.setAttribute('data-l10n-id', 'gscc-menuitem');
+    menuitem.setAttribute('data-l10n-id', 'ghstar-menuitem');
     menuitem.addEventListener('command', async () => {
-      await $__gscc.app.updateItemMenuEntries();
+      await $__ghstar.app.updateItemMenuEntries();
     });
     doc.getElementById('zotero-itemmenu').appendChild(menuitem);
 
-    $__gscc.debugger.info(`Menu Item Option Added to Right Click Menu`);
+    $__ghstar.debugger.info(`Menu Item Option Added to Right Click Menu`);
 
-    const columnLabel = await doc.l10n.formatValue('gscc-column-name');
+    const columnLabel = await doc.l10n.formatValue('ghstar-column-name');
     const columnLastUpdateLabel = await doc.l10n.formatValue(
-      'gscc-lastupdated-column-name',
+      'ghstar-lastupdated-column-name',
     );
     const columnRelevanceScoreLabel = await doc.l10n.formatValue(
-      'gscc-relevancescore-column-name',
+      'ghstar-relevancescore-column-name',
     );
 
-    $__gscc.app.__registeredDataKey =
+    $__ghstar.app.__registeredDataKey =
       await Zotero.ItemTreeManager.registerColumns([
         {
-          dataKey: 'gsccCount',
+          dataKey: 'ghstarCount',
           label: columnLabel,
           pluginID: 'justin@justinribeiro.com',
           dataProvider: (item, dataKey) => {
@@ -321,7 +321,7 @@ $__gscc.app = {
           zoteroPersist: ['width', 'hidden', 'sortDirection'],
         },
         {
-          dataKey: 'gsccCountUpdated',
+          dataKey: 'ghstarCountUpdated',
           label: columnLastUpdateLabel,
           pluginID: 'justin@justinribeiro.com',
           dataProvider: (item, dataKey) => {
@@ -330,7 +330,7 @@ $__gscc.app = {
           zoteroPersist: ['width', 'hidden', 'sortDirection'],
         },
         {
-          dataKey: 'gsccRelevanceScore',
+          dataKey: 'ghstarRelevanceScore',
           label: columnRelevanceScoreLabel,
           pluginID: 'justin@justinribeiro.com',
           dataProvider: (item, dataKey) => {
@@ -340,7 +340,7 @@ $__gscc.app = {
         },
       ]);
 
-    $__gscc.app.registerNotifier();
+    $__ghstar.app.registerNotifier();
   },
 
   /**
@@ -352,7 +352,7 @@ $__gscc.app = {
         this.onItemNotify(event, type, ids);
       },
     };
-    $__gscc.app.__registeredNotifierKey = Zotero.Notifier.registerObserver(
+    $__ghstar.app.__registeredNotifierKey = Zotero.Notifier.registerObserver(
       callback,
       ['item'],
     );
@@ -366,21 +366,21 @@ $__gscc.app = {
    */
   onItemNotify: async (event, type, ids) => {
     const useAutoCountUpdate = Zotero.Prefs.get(
-      'extensions.zotero.gscc.useAutoCountUpdate',
+      'extensions.zotero.ghstar.useAutoCountUpdate',
       true,
     );
 
-    $__gscc.debugger.info(`useAutoCountUpdate set to ${useAutoCountUpdate}`);
+    $__ghstar.debugger.info(`useAutoCountUpdate set to ${useAutoCountUpdate}`);
 
     if (useAutoCountUpdate && event === 'add' && type === 'item') {
-      $__gscc.debugger.info(`useAutoSearch running on new add!`);
+      $__ghstar.debugger.info(`useAutoSearch running on new add!`);
       const newItems = await Zotero.Items.getAsync(ids);
-      await $__gscc.app.processItems(newItems);
+      await $__ghstar.app.processItems(newItems);
     }
   },
 
   /**
-   * Set the custom column for the GsccExtra field key by parsing the extra field
+   * Set the custom column for the GHStarExtra field key by parsing the extra field
    * @param {String} extraString
    */
   setColumnData: function (item, field) {
@@ -390,8 +390,8 @@ $__gscc.app = {
   },
 
   /**
-   * GSCC Extra Data Type
-   * @typedef {Object} GsccExtra
+   * GHSTAR Extra Data Type
+   * @typedef {Object} GHStarExtra
    * @property {number} citationCount - The GS citation count
    * @property {date} lateUpdated - The last time we pulled the data.
    * @property {number} relevanceScore - The relative relevance of the citations
@@ -399,7 +399,7 @@ $__gscc.app = {
   /**
    * Break apart all the variants we can think of for other uses
    * @param {String} extraString
-   * @return {GsccExtra}
+   * @return {GHStarExtra}
    */
   extraFieldExtractor: function (extraString) {
     const parts = {
@@ -418,7 +418,7 @@ $__gscc.app = {
       if (match) {
         // cool, a match, let's break it up
         let matches = match.split(' ');
-        if (matches[0] !== `GSCC:`) {
+        if (matches[0] !== `GHSTAR:`) {
           // Compressed string, split it
           const splitter = matches[0].split(':');
           matches.shift();
@@ -441,13 +441,13 @@ $__gscc.app = {
   removeFromWindow: async function (win) {
     const doc = win.document;
     await Zotero.ItemTreeManager.unregisterColumns(
-      $__gscc.app.registeredDataKey,
+      $__ghstar.app.registeredDataKey,
     );
 
     try {
       // failsafe
-      doc.querySelector('#gscc-get-count').remove();
-      $__gscc.debugger.info('Running failsafe remove custom column.');
+      doc.querySelector('#ghstar-get-count').remove();
+      $__ghstar.debugger.info('Running failsafe remove custom column.');
     } catch {}
   },
   addToAllWindows: function () {
@@ -474,11 +474,11 @@ $__gscc.app = {
     return item.getField('title') !== '' && item.getCreators().length > 0;
   },
   updateCollectionMenuEntry: async function () {
-    const zoteroPane = $__gscc.app.getActivePane();
+    const zoteroPane = $__ghstar.app.getActivePane();
     const window = Zotero.getMainWindow();
 
     const permissionAlertString = await window.document.l10n.formatValue(
-      'gscc-lackPermissions',
+      'ghstar-lackPermissions',
     );
 
     if (!zoteroPane.canEditLibrary()) {
@@ -499,18 +499,18 @@ $__gscc.app = {
     }
 
     const unSupportedEntryTypeString = await window.document.l10n.formatValue(
-      'gscc-unSupportedEntryType',
+      'ghstar-unSupportedEntryType',
     );
     window.alert(unSupportedEntryTypeString);
     return;
   },
   updateItemMenuEntries: async function () {
-    const zoteroPane = $__gscc.app.getActivePane();
+    const zoteroPane = $__ghstar.app.getActivePane();
     const window = Zotero.getMainWindow();
 
     if (!zoteroPane.canEditLibrary()) {
       const permissionAlertString = await window.document.l10n.formatValue(
-        'gscc-lackPermissions',
+        'ghstar-lackPermissions',
       );
       window.alert(permissionAlertString);
       return;
@@ -520,7 +520,7 @@ $__gscc.app = {
   updateGroup: async function () {
     const window = Zotero.getMainWindow();
     const unSupportedGroupCollectionString =
-      await window.document.l10n.formatValue('gscc-unSupportedGroupCollection');
+      await window.document.l10n.formatValue('ghstar-unSupportedGroupCollection');
     window.alert(unSupportedGroupCollectionString);
     return;
   },
@@ -537,26 +537,26 @@ $__gscc.app = {
    */
   processItems: async function (items) {
     const useQueue = Zotero.Prefs.get(
-      'extensions.zotero.gscc.useRandomWait',
-      $__gscc.app.__preferenceDefaults.useRandomWait,
+      'extensions.zotero.ghstar.useRandomWait',
+      $__ghstar.app.__preferenceDefaults.useRandomWait,
     );
 
     let queueMinWaitMs;
     let queueMaxWaitMs;
 
-    $__gscc.debugger.info(`Use Queue: ${useQueue}`);
+    $__ghstar.debugger.info(`Use Queue: ${useQueue}`);
 
     if (useQueue) {
       queueMinWaitMs = Zotero.Prefs.get(
-        'extensions.zotero.gscc.randomWaitMinMs',
-        $__gscc.app.__preferenceDefaults.randomWaitMinMs,
+        'extensions.zotero.ghstar.randomWaitMinMs',
+        $__ghstar.app.__preferenceDefaults.randomWaitMinMs,
       );
       queueMaxWaitMs = Zotero.Prefs.get(
-        'extensions.zotero.gscc.randomWaitMaxMs',
-        $__gscc.app.__preferenceDefaults.randomWaitMaxMs,
+        'extensions.zotero.ghstar.randomWaitMaxMs',
+        $__ghstar.app.__preferenceDefaults.randomWaitMaxMs,
       );
 
-      $__gscc.debugger.info(`Min: ${queueMinWaitMs} Max: ${queueMaxWaitMs}`);
+      $__ghstar.debugger.info(`Min: ${queueMinWaitMs} Max: ${queueMaxWaitMs}`);
     }
 
     // we need to validate if the Google Scholar URL setting is sane
@@ -564,7 +564,7 @@ $__gscc.app = {
     const apiEndpoint = await this.getApiEndpoint();
     if (!apiEndpoint) {
       // we threw the error to the user, bail on any other work
-      $__gscc.debugger.error(
+      $__ghstar.debugger.error(
         `Google Scholar URL is malformed in Settings, stopping work.`,
       );
       return;
@@ -576,7 +576,7 @@ $__gscc.app = {
      */
     for (const [index, item] of items.entries()) {
       if (!this.hasRequiredFields(item)) {
-        $__gscc.debugger.warn(
+        $__ghstar.debugger.warn(
           `skipping item '${item.getField(
             'title',
           )}': empty title or missing creator information'`,
@@ -585,13 +585,13 @@ $__gscc.app = {
         // check the prefs in case user override, don't use it on the first item
         // either way
         if (useQueue && index > 0) {
-          const queueTime = $__gscc.util.randomInteger(
+          const queueTime = $__ghstar.util.randomInteger(
             queueMinWaitMs,
             queueMaxWaitMs,
           );
 
-          $__gscc.debugger.info(`queued for ${queueTime} ms later.`);
-          await $__gscc.util.sleep(queueTime);
+          $__ghstar.debugger.info(`queued for ${queueTime} ms later.`);
+          await $__ghstar.util.sleep(queueTime);
         }
 
         const response = await this.retrieveCitationData(item);
@@ -624,11 +624,11 @@ $__gscc.app = {
         new RegExp(String.raw`${this.__extraEntryPrefix}:(.*)[^ \n]`, 'g'),
         buildNewCiteCount,
       );
-      $__gscc.debugger.info(
+      $__ghstar.debugger.info(
         `existing cite count in extra field, updating to ${buildNewCiteCount} ${revisedExtraField}`,
       );
     } else {
-      $__gscc.debugger.info(`no existing cite count in extra field, adding`);
+      $__ghstar.debugger.info(`no existing cite count in extra field, adding`);
       revisedExtraField =
         `${buildNewCiteCount}${this.__extraEntrySeparator}`.concat(
           '',
@@ -640,7 +640,7 @@ $__gscc.app = {
     try {
       item.saveTx();
     } catch (e) {
-      $__gscc.debugger.error(
+      $__ghstar.debugger.error(
         `could not update extra field with citation count: ${e}`,
       );
     }
@@ -656,10 +656,10 @@ $__gscc.app = {
     const window = Zotero.getMainWindow();
     const progressPopUp = this.getProgressWindow();
     const headlineLabel = await window.document.l10n.formatValue(
-      'gscc-progresswindow-title',
+      'ghstar-progresswindow-title',
     );
     const descriptionLabel = await window.document.l10n.formatValue(
-      'gscc-progresswindow-desc',
+      'ghstar-progresswindow-desc',
     );
 
     progressPopUp.changeHeadline(headlineLabel);
@@ -675,7 +675,7 @@ $__gscc.app = {
    */
   retrieveCitationData: async function (item) {
     const targetUrl = await this.generateItemUrl(item);
-    return $__gscc.util.request({ method: 'GET', url: targetUrl });
+    return $__ghstar.util.request({ method: 'GET', url: targetUrl });
   },
   /**
    * process the fetch request for information
@@ -693,26 +693,26 @@ $__gscc.app = {
     targetUrl,
     item,
   ) {
-    $__gscc.debugger.info(`Request Status: ${requestStatus}`);
+    $__ghstar.debugger.info(`Request Status: ${requestStatus}`);
     let retryResponse;
     switch (requestStatus) {
       case 200:
-        if (!$__gscc.util.hasRecaptcha(requestData)) {
-          if ($__gscc.util.hasCitationResults(requestData)) {
-            $__gscc.debugger.info(
+        if (!$__ghstar.util.hasRecaptcha(requestData)) {
+          if ($__ghstar.util.hasCitationResults(requestData)) {
+            $__ghstar.debugger.info(
               `Google Scholar returned search result, parsing cite count`,
             );
             this.updateItem(item, this.getCiteCount(requestData));
           } else {
-            $__gscc.debugger.warn(
+            $__ghstar.debugger.warn(
               `Google Scholar found no search result for requested item: ${targetUrl}`,
             );
           }
         } else {
-          $__gscc.debugger.warn(
+          $__ghstar.debugger.warn(
             'Google Scholar asking for recaptcha, opening window.',
           );
-          await $__gscc.util.openRecaptchaWindow(targetUrl);
+          await $__ghstar.util.openRecaptchaWindow(targetUrl);
           retryResponse = await this.retrieveCitationData(item);
           await this.processCitationResponse(
             retryResponse.status,
@@ -724,10 +724,10 @@ $__gscc.app = {
         }
         break;
       case 403:
-        $__gscc.debugger.warn(
+        $__ghstar.debugger.warn(
           'Google Scholar thinks we are sus, opening window.',
         );
-        await $__gscc.util.openRecaptchaWindow(targetUrl);
+        await $__ghstar.util.openRecaptchaWindow(targetUrl);
         retryResponse = await this.retrieveCitationData(item);
         await this.processCitationResponse(
           retryResponse.status,
@@ -738,21 +738,21 @@ $__gscc.app = {
         );
         break;
       case 404:
-        $__gscc.debugger.error(
+        $__ghstar.debugger.error(
           `Google Scholar could not find the requested page.`,
         );
         break;
       case 429:
         if (requestRetry) {
-          $__gscc.debugger.warn(
+          $__ghstar.debugger.warn(
             `Google Scholar asks for retry after ${requestRetry} seconds, re-queuing request.`,
           );
-          await $__gscc.util.sleep(requestRetry * 1000);
+          await $__ghstar.util.sleep(requestRetry * 1000);
           await this.retrieveCitationData(item);
         }
         break;
       default:
-        $__gscc.debugger.error(
+        $__ghstar.debugger.error(
           `Google Scholar fetch failed for item: ${targetUrl}`,
         );
         break;
@@ -767,14 +767,14 @@ $__gscc.app = {
     try {
       apiEndpoint = new URL(
         Zotero.Prefs.get(
-          'extensions.zotero.gscc.defaultGsApiEndpoint',
-          $__gscc.app.__preferenceDefaults.defaultGsApiEndpoint,
+          'extensions.zotero.ghstar.defaultGsApiEndpoint',
+          $__ghstar.app.__preferenceDefaults.defaultGsApiEndpoint,
         ),
       );
     } catch {
       const window = Zotero.getMainWindow();
       const invalidGoogleScholarURL = await window.document.l10n.formatValue(
-        'gscc-invalidGoogleScholarURL',
+        'ghstar-invalidGoogleScholarURL',
       );
       window.alert(invalidGoogleScholarURL);
       return null;
@@ -788,20 +788,20 @@ $__gscc.app = {
    * @returns string
    */
   generateItemUrl: async function (item) {
-    const apiEndpoint = await $__gscc.app.getApiEndpoint();
+    const apiEndpoint = await $__ghstar.app.getApiEndpoint();
     const useSearchTitleFuzzyMatch = Zotero.Prefs.get(
-      'extensions.zotero.gscc.useSearchTitleFuzzyMatch',
-      $__gscc.app.__preferenceDefaults.useSearchTitleFuzzyMatch,
+      'extensions.zotero.ghstar.useSearchTitleFuzzyMatch',
+      $__ghstar.app.__preferenceDefaults.useSearchTitleFuzzyMatch,
     );
 
     const useSearchAuthorsMatch = Zotero.Prefs.get(
-      'extensions.zotero.gscc.useSearchAuthorsMatch',
-      $__gscc.app.__preferenceDefaults.useSearchAuthorsMatch,
+      'extensions.zotero.ghstar.useSearchAuthorsMatch',
+      $__ghstar.app.__preferenceDefaults.useSearchAuthorsMatch,
     );
 
     const useDateRangeMatch = Zotero.Prefs.get(
-      'extensions.zotero.gscc.useDateRangeMatch',
-      $__gscc.app.__preferenceDefaults.useDateRangeMatch,
+      'extensions.zotero.ghstar.useDateRangeMatch',
+      $__ghstar.app.__preferenceDefaults.useDateRangeMatch,
     );
 
     // Strip HTML from titles as breaks matching in GS
@@ -812,7 +812,7 @@ $__gscc.app = {
 
     let titleSearchString;
     if (useSearchTitleFuzzyMatch) {
-      $__gscc.debugger.info(
+      $__ghstar.debugger.info(
         `Search Param: Using Fuzzy Title Match per Preferences`,
       );
       titleSearchString = `${sanitizedTitle}`;
@@ -824,7 +824,7 @@ $__gscc.app = {
 
     let paramAuthors = '';
     if (useSearchAuthorsMatch) {
-      $__gscc.debugger.info(
+      $__ghstar.debugger.info(
         `Search Param: Adding Authors Match per Preferences`,
       );
       /**
@@ -842,7 +842,7 @@ $__gscc.app = {
 
     let paramYearRange = '';
     if (useDateRangeMatch) {
-      $__gscc.debugger.info(`Search Param: Adding Date Range per Preferences`);
+      $__ghstar.debugger.info(`Search Param: Adding Date Range per Preferences`);
       const year = parseInt(item.getField('year'));
       if (year) {
         paramYearRange = `&as_ylo=${year - 2}&as_yhi=${year + 2}`;
@@ -850,7 +850,7 @@ $__gscc.app = {
     }
 
     const targetUrl = `${apiEndpoint.href}scholar?hl=en&q=${titleSearchString}&as_epq=&as_occt=title&num=1${paramAuthors}${paramYearRange}`;
-    $__gscc.debugger.info(`Search Endpoint Ready: ${targetUrl}`);
+    $__ghstar.debugger.info(`Search Endpoint Ready: ${targetUrl}`);
 
     return encodeURI(targetUrl);
   },
@@ -864,7 +864,7 @@ $__gscc.app = {
     if (citeCount < 0) {
       data = this.__noData;
     } else {
-      data = $__gscc.util.padCountWithZeros(
+      data = $__ghstar.util.padCountWithZeros(
         citeCount.toString(),
         this.__citeCountStrLength,
       );
@@ -882,7 +882,7 @@ $__gscc.app = {
    * @returns number
    */
   getCiteCount: function (responseText) {
-    const citePrefix = `>${$__gscc.app.__citedByPrefix}`;
+    const citePrefix = `>${$__ghstar.app.__citedByPrefix}`;
     const citePrefixLen = citePrefix.length;
     const citeCountStart = responseText.indexOf(citePrefix);
 
@@ -921,18 +921,18 @@ $__gscc.app = {
 /**
  * The handlers are what bind to the actions within the overlay XUL
  */
-$__gscc.handlers = {
+$__ghstar.handlers = {
   updateCollectionMenuEntry: async function () {
-    await $__gscc.app.updateCollectionMenuEntry();
+    await $__ghstar.app.updateCollectionMenuEntry();
   },
   updateItemMenuEntries: async function () {
-    await $__gscc.app.updateItemMenuEntries();
+    await $__ghstar.app.updateItemMenuEntries();
   },
 };
 
 // For testing only
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
-    $__gscc,
+    $__ghstar,
   };
 }

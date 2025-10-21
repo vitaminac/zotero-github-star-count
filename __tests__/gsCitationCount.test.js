@@ -1,4 +1,4 @@
-const base = require('../src/gscc.js');
+const base = require('../src/ghstar.js');
 const hasCitation = require('./__data__/gsResponseHasCitation.js');
 const hasCitation2023Version = require('./__data__/gsResponseHasCitationJuly2023GSUpdate.js');
 const hasCitation2023VersionAltReturn = require('./__data__/gsResponseHasCitationJuly2023GSUpdateAltSearchCase.js');
@@ -17,7 +17,7 @@ const extraFieldTester = require('./__data__/extraFieldExtractorData.js');
 window.alert = jest.fn();
 jest.useRealTimers();
 
-describe('Verify $__gscc.app sanity', () => {
+describe('Verify $__ghstar.app sanity', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.useFakeTimers('modern');
@@ -25,55 +25,55 @@ describe('Verify $__gscc.app sanity', () => {
   });
 
   it('init() should set app', () => {
-    const id = 'gscc';
+    const id = 'ghstar';
     const version = '4.0.0';
     const rootURI = 'justinribeiro.com';
-    base.$__gscc.app.init({ id, version, rootURI });
+    base.$__ghstar.app.init({ id, version, rootURI });
 
-    expect(base.$__gscc.app.__initialized).toBe(true);
+    expect(base.$__ghstar.app.__initialized).toBe(true);
   });
 
   it('getCiteCount() should return number', () => {
-    const test = base.$__gscc.app.getCiteCount(hasCitation.data);
+    const test = base.$__ghstar.app.getCiteCount(hasCitation.data);
     expect(test).toBe(1028);
   });
 
   it('getCiteCount() should return number from July 2023 GS UI Update', () => {
-    const test = base.$__gscc.app.getCiteCount(hasCitation2023Version.data);
+    const test = base.$__ghstar.app.getCiteCount(hasCitation2023Version.data);
     expect(test).toBe(2468);
   });
 
   it('getCiteCount() should return number from July 2023 GS UI Update - Alt Case!', () => {
-    const test = base.$__gscc.app.getCiteCount(
+    const test = base.$__ghstar.app.getCiteCount(
       hasCitation2023VersionAltReturn.data,
     );
     expect(test).toBe(2468);
   });
 
   it('getCiteCount() should return -1, no data', () => {
-    const test = base.$__gscc.app.getCiteCount(noCitation.data);
+    const test = base.$__ghstar.app.getCiteCount(noCitation.data);
     expect(test).toBe(-1);
   });
 
   it('getCiteCount() should return 0, no count', () => {
-    const test = base.$__gscc.app.getCiteCount(hasPaperNoCitations.data);
+    const test = base.$__ghstar.app.getCiteCount(hasPaperNoCitations.data);
     expect(test).toBe(0);
   });
 
   it('buildcitecountstring() string + count', () => {
-    const count = base.$__gscc.app.getCiteCount(hasCitation.data);
-    const test = base.$__gscc.app.buildCiteCountString(count);
-    expect(test).toEqual('GSCC: 0001028 2025-01-01T08:00:00.000Z 0');
+    const count = base.$__ghstar.app.getCiteCount(hasCitation.data);
+    const test = base.$__ghstar.app.buildCiteCountString(count);
+    expect(test).toEqual('GHSTAR: 0001028 2025-01-01T08:00:00.000Z 0');
   });
 
   it('buildcitecountstring() string + no data', () => {
-    const count = base.$__gscc.app.getCiteCount(noCitation.data);
-    const test = base.$__gscc.app.buildCiteCountString(count);
-    expect(test).toEqual('GSCC: NoCitationData 2025-01-01T08:00:00.000Z 0');
+    const count = base.$__ghstar.app.getCiteCount(noCitation.data);
+    const test = base.$__ghstar.app.buildCiteCountString(count);
+    expect(test).toEqual('GHSTAR: NoCitationData 2025-01-01T08:00:00.000Z 0');
   });
 
   it('generateItemUrl() should output string', async () => {
-    const string = await base.$__gscc.app.generateItemUrl(
+    const string = await base.$__ghstar.app.generateItemUrl(
       singleItemNoCount.data,
     );
     expect(string).toEqual(
@@ -82,7 +82,7 @@ describe('Verify $__gscc.app sanity', () => {
   });
 
   it('generateItemUrl() should handle HTML in title', async () => {
-    const string = await base.$__gscc.app.generateItemUrl(
+    const string = await base.$__ghstar.app.generateItemUrl(
       singleItemHtmlTitle.data,
     );
     expect(string).toEqual(
@@ -94,11 +94,11 @@ describe('Verify $__gscc.app sanity', () => {
     const item = singleItemWithCountLegacyFormat.data;
     const extra = jest.spyOn(item, 'setField');
     const tx = jest.spyOn(item, 'saveTx');
-    base.$__gscc.app.updateItem(item, 400);
+    base.$__ghstar.app.updateItem(item, 400);
     expect(extra).toHaveBeenCalled();
     expect(tx).toHaveBeenCalled();
     expect(item.getField('extra')).toEqual(
-      'GSCC: 0000400 2025-01-01T08:00:00.000Z 0.22 \nPublisher: SAGE Publications Inc',
+      'GHSTAR: 0000400 2025-01-01T08:00:00.000Z 0.22 \nPublisher: SAGE Publications Inc',
     );
   });
 
@@ -106,11 +106,11 @@ describe('Verify $__gscc.app sanity', () => {
     const item = singleItemWithCount.data;
     const extra = jest.spyOn(item, 'setField');
     const tx = jest.spyOn(item, 'saveTx');
-    base.$__gscc.app.updateItem(item, 1000);
+    base.$__ghstar.app.updateItem(item, 1000);
     expect(extra).toHaveBeenCalled();
     expect(tx).toHaveBeenCalled();
     expect(item.getField('extra')).toEqual(
-      'GSCC: 0001000 2025-01-01T08:00:00.000Z 0.54 \nPublisher: SAGE Publications Inc',
+      'GHSTAR: 0001000 2025-01-01T08:00:00.000Z 0.54 \nPublisher: SAGE Publications Inc',
     );
   });
 
@@ -118,80 +118,80 @@ describe('Verify $__gscc.app sanity', () => {
     const item = { ...singleItemNoCount.data };
     const extra = jest.spyOn(item, 'setField');
     const tx = jest.spyOn(item, 'saveTx');
-    base.$__gscc.app.updateItem(item, 10);
+    base.$__ghstar.app.updateItem(item, 10);
     expect(extra).toHaveBeenCalled();
     expect(tx).toHaveBeenCalled();
     expect(item.getField('extra')).toEqual(
-      'GSCC: 0000010 2025-01-01T08:00:00.000Z 0.01 \n',
+      'GHSTAR: 0000010 2025-01-01T08:00:00.000Z 0.01 \n',
     );
   });
 
   it('hasRequiredFields() should return true with sane data', () => {
     const item = { ...singleItemNoCount.data };
-    const test = base.$__gscc.app.hasRequiredFields(item);
+    const test = base.$__ghstar.app.hasRequiredFields(item);
     expect(test).toBe(true);
   });
 
   it('hasRequiredFields() should return false with no title', () => {
     const item = singleItemNoTitle.data;
-    const test = base.$__gscc.app.hasRequiredFields(item);
+    const test = base.$__ghstar.app.hasRequiredFields(item);
     expect(test).toBe(false);
   });
 
   it('hasRequiredFields() should return false with no creators', () => {
     const item = singleItemNoCreators.data;
-    const test = base.$__gscc.app.hasRequiredFields(item);
+    const test = base.$__ghstar.app.hasRequiredFields(item);
     expect(test).toBe(false);
   });
 
   it('processCitationResponse() 200 should set item data', () => {
     const item = { ...singleItemNoCount.data };
-    const targetUrl = base.$__gscc.app.generateItemUrl(singleItemNoCount.data);
-    base.$__gscc.app.processCitationResponse(
+    const targetUrl = base.$__ghstar.app.generateItemUrl(singleItemNoCount.data);
+    base.$__ghstar.app.processCitationResponse(
       200,
       hasCitation.data,
       null,
       targetUrl,
       item,
       (item, citeCount) => {
-        base.$__gscc.app.updateItem(item, citeCount);
+        base.$__ghstar.app.updateItem(item, citeCount);
       },
     );
     expect(item.getField('extra')).toEqual(
-      'GSCC: 0001028 2025-01-01T08:00:00.000Z 0.56 \n',
+      'GHSTAR: 0001028 2025-01-01T08:00:00.000Z 0.56 \n',
     );
   });
 
   it('processCitationResponse() 200 should warn on console when item not found', () => {
-    const warn = jest.spyOn(base.$__gscc.debugger, 'warn');
+    const warn = jest.spyOn(base.$__ghstar.debugger, 'warn');
     const item = { ...singleItemNoCount.data };
-    const targetUrl = base.$__gscc.app.generateItemUrl(singleItemNoCount.data);
-    base.$__gscc.app.processCitationResponse(
+    const targetUrl = base.$__ghstar.app.generateItemUrl(singleItemNoCount.data);
+    base.$__ghstar.app.processCitationResponse(
       200,
       noCitation.data,
       null,
       targetUrl,
       item,
       (item, citeCount) => {
-        base.$__gscc.app.updateItem(item, citeCount);
+        base.$__ghstar.app.updateItem(item, citeCount);
       },
     );
     expect(warn).toHaveBeenCalled();
   });
 
   it('processCitationResponse() 200 should open window on recaptcha', () => {
-    const warn = jest.spyOn(base.$__gscc.debugger, 'warn');
-    const openWindow = jest.spyOn(base.$__gscc.util, 'openRecaptchaWindow');
+    const warn = jest.spyOn(base.$__ghstar.debugger, 'warn');
+    const openWindow = jest.spyOn(base.$__ghstar.util, 'openRecaptchaWindow');
     const item = { ...singleItemNoCount.data };
-    const targetUrl = base.$__gscc.app.generateItemUrl(singleItemNoCount.data);
-    base.$__gscc.app.processCitationResponse(
+    const targetUrl = base.$__ghstar.app.generateItemUrl(singleItemNoCount.data);
+    base.$__ghstar.app.processCitationResponse(
       200,
       hasRecaptcha.data,
       null,
       targetUrl,
       item,
       (item, citeCount) => {
-        base.$__gscc.app.updateItem(item, citeCount);
+        base.$__ghstar.app.updateItem(item, citeCount);
       },
     );
     expect(warn).toHaveBeenCalled();
@@ -199,126 +199,126 @@ describe('Verify $__gscc.app sanity', () => {
   });
 
   it('processCitationResponse() 404 should console error', () => {
-    const warn = jest.spyOn(base.$__gscc.debugger, 'error');
+    const warn = jest.spyOn(base.$__ghstar.debugger, 'error');
     const item = { ...singleItemNoCount.data };
-    const targetUrl = base.$__gscc.app.generateItemUrl(singleItemNoCount.data);
-    base.$__gscc.app.processCitationResponse(
+    const targetUrl = base.$__ghstar.app.generateItemUrl(singleItemNoCount.data);
+    base.$__ghstar.app.processCitationResponse(
       404,
       hasRecaptcha.data,
       null,
       targetUrl,
       item,
       (item, citeCount) => {
-        base.$__gscc.app.updateItem(item, citeCount);
+        base.$__ghstar.app.updateItem(item, citeCount);
       },
     );
     expect(warn).toHaveBeenCalled();
   });
 
   it('processCitationResponse() 429 should not console warn if retry set', () => {
-    const warn = jest.spyOn(base.$__gscc.debugger, 'warn');
+    const warn = jest.spyOn(base.$__ghstar.debugger, 'warn');
     const item = { ...singleItemNoCount.data };
-    const targetUrl = base.$__gscc.app.generateItemUrl(singleItemNoCount.data);
-    base.$__gscc.app.processCitationResponse(
+    const targetUrl = base.$__ghstar.app.generateItemUrl(singleItemNoCount.data);
+    base.$__ghstar.app.processCitationResponse(
       429,
       hasRecaptcha.data,
       null,
       targetUrl,
       item,
       (item, citeCount) => {
-        base.$__gscc.app.updateItem(item, citeCount);
+        base.$__ghstar.app.updateItem(item, citeCount);
       },
     );
     expect(warn).toHaveBeenCalledTimes(0);
   });
 
   it('processCitationResponse() 429 should console warn if retry set', () => {
-    const warn = jest.spyOn(base.$__gscc.debugger, 'warn');
+    const warn = jest.spyOn(base.$__ghstar.debugger, 'warn');
     const item = { ...singleItemNoCount.data };
-    const targetUrl = base.$__gscc.app.generateItemUrl(singleItemNoCount.data);
-    base.$__gscc.app.processCitationResponse(
+    const targetUrl = base.$__ghstar.app.generateItemUrl(singleItemNoCount.data);
+    base.$__ghstar.app.processCitationResponse(
       429,
       hasRecaptcha.data,
       2000,
       targetUrl,
       item,
       (item, citeCount) => {
-        base.$__gscc.app.updateItem(item, citeCount);
+        base.$__ghstar.app.updateItem(item, citeCount);
       },
     );
     expect(warn).toHaveBeenCalledTimes(1);
   });
 
   it('processCitationResponse() 500 should console error', () => {
-    const error = jest.spyOn(base.$__gscc.debugger, 'error');
+    const error = jest.spyOn(base.$__ghstar.debugger, 'error');
     const item = { ...singleItemNoCount.data };
-    const targetUrl = base.$__gscc.app.generateItemUrl(singleItemNoCount.data);
-    base.$__gscc.app.processCitationResponse(
+    const targetUrl = base.$__ghstar.app.generateItemUrl(singleItemNoCount.data);
+    base.$__ghstar.app.processCitationResponse(
       500,
       hasRecaptcha.data,
       null,
       targetUrl,
       item,
       (item, citeCount) => {
-        base.$__gscc.app.updateItem(item, citeCount);
+        base.$__ghstar.app.updateItem(item, citeCount);
       },
     );
     expect(error).toHaveBeenCalledTimes(1);
   });
 
   it('addToWindow sets up world', async () => {
-    const info = jest.spyOn(base.$__gscc.debugger, 'info');
+    const info = jest.spyOn(base.$__ghstar.debugger, 'info');
 
     // there's no menu in JSDOM, so we make one temp wise
     const ele = global.document.createElement('div');
     ele.id = 'zotero-itemmenu';
     global.document.body.appendChild(ele);
 
-    await base.$__gscc.app.addToWindow(global.window);
+    await base.$__ghstar.app.addToWindow(global.window);
 
-    // expect(base.$__gscc.app.__citedByPrefix).toBe('gscc-citedByPrefix');
+    // expect(base.$__ghstar.app.__citedByPrefix).toBe('ghstar-citedByPrefix');
     expect(info).toHaveBeenCalledTimes(1);
   });
 
   it('removeFromWindow runs failsafe in case unregister fails', async () => {
-    const info = jest.spyOn(base.$__gscc.debugger, 'info');
+    const info = jest.spyOn(base.$__ghstar.debugger, 'info');
 
     // there's no menu in JSDOM, so we make one temp wise
     const ele = global.document.createElement('div');
-    ele.id = 'gscc-get-count';
+    ele.id = 'ghstar-get-count';
     global.document.body.appendChild(ele);
 
-    await base.$__gscc.app.removeFromWindow(global.window);
+    await base.$__ghstar.app.removeFromWindow(global.window);
 
     expect(info).toHaveBeenCalledTimes(1);
   });
 
   it('processItems burns correctly', async () => {
-    const info = jest.spyOn(base.$__gscc.debugger, 'info');
-    jest.spyOn($__gscc.app, 'retrieveCitationData');
-    jest.spyOn($__gscc.app, 'processCitationResponse');
-    await base.$__gscc.app.processItems(itemsList);
+    const info = jest.spyOn(base.$__ghstar.debugger, 'info');
+    jest.spyOn($__ghstar.app, 'retrieveCitationData');
+    jest.spyOn($__ghstar.app, 'processCitationResponse');
+    await base.$__ghstar.app.processItems(itemsList);
 
     expect(info).toHaveBeenCalledTimes(6);
   });
 
   it('getApiEndpoint handles bad data URL', async () => {
     const alert = jest.spyOn(global.window, 'alert');
-    base.$__gscc.app.__preferenceDefaults.defaultGsApiEndpoint = 'gibbgerish';
-    await base.$__gscc.app.getApiEndpoint();
+    base.$__ghstar.app.__preferenceDefaults.defaultGsApiEndpoint = 'gibbgerish';
+    await base.$__ghstar.app.getApiEndpoint();
 
     expect(alert).toHaveBeenCalledTimes(1);
   });
 
   it('verify field key lookup in setColumnData', () => {
     const item = singleItemWithCount.data;
-    const citeCount = base.$__gscc.app.setColumnData(item, 'citationCount');
+    const citeCount = base.$__ghstar.app.setColumnData(item, 'citationCount');
     expect(citeCount).toBe(1000);
 
-    const lastUpdated = base.$__gscc.app.setColumnData(item, 'lastUpdated');
+    const lastUpdated = base.$__ghstar.app.setColumnData(item, 'lastUpdated');
     expect(lastUpdated).toBe('1/1/2025, 12:00:00 AM');
 
-    const relevanceScore = base.$__gscc.app.setColumnData(
+    const relevanceScore = base.$__ghstar.app.setColumnData(
       item,
       'relevanceScore',
     );
@@ -327,7 +327,7 @@ describe('Verify $__gscc.app sanity', () => {
 
   it('extra Field Extractor tests', () => {
     for (const test of extraFieldTester) {
-      const verify = base.$__gscc.app.extraFieldExtractor(test.string);
+      const verify = base.$__ghstar.app.extraFieldExtractor(test.string);
       expect(verify).toEqual(test.expectedResult);
     }
   });

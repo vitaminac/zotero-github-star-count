@@ -38,7 +38,7 @@ const data = helpers.createItem({
   libraryCatalog: 'DOI.org (Crossref)',
   callNumber: '',
   rights: '',
-  extra: 'GSCC: 0000071',
+  extra: 'GHSTAR: 0000071',
   tags: [],
   collections: ['27YH8FR3'],
   relations: {},

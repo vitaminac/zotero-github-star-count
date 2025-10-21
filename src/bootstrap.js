@@ -1,17 +1,17 @@
-var $__gscc;
+var $__ghstar;
 
 function log(msg) {
-  Zotero.debug('GSCC:' + msg);
+  Zotero.debug('GHSTAR:' + msg);
 }
 
 function install() {
-  log('Installed GSCC 4.0.0');
+  log('Installed GHSTAR 4.0.0');
 }
 
 async function startup({ id, version, rootURI }) {
-  log('Starting GSCC 4.0.0');
+  log('Starting GHSTAR 4.0.0');
 
-  const filePath = `${rootURI}/gscc.js`;
+  const filePath = `${rootURI}/ghstar.js`;
   Services.scriptloader.loadSubScript(filePath);
 
   Zotero.PreferencePanes.register({
@@ -19,23 +19,23 @@ async function startup({ id, version, rootURI }) {
     src: `${rootURI}prefs.xhtml`,
   });
 
-  $__gscc.app.init({ id, version, rootURI });
-  $__gscc.app.addToAllWindows();
-  await $__gscc.app.main();
+  $__ghstar.app.init({ id, version, rootURI });
+  $__ghstar.app.addToAllWindows();
+  await $__ghstar.app.main();
 }
 
 function onMainWindowLoad({ window }) {
-  $__gscc.app.addToWindow(window);
+  $__ghstar.app.addToWindow(window);
 }
 
 function onMainWindowUnload({ window }) {
-  $__gscc.app.removeFromWindow(window);
+  $__ghstar.app.removeFromWindow(window);
 }
 
 function shutdown() {
-  $__gscc.app.removeFromAllWindows();
+  $__ghstar.app.removeFromAllWindows();
 }
 
 function uninstall() {
-  $__gscc.app.removeFromAllWindows();
+  $__ghstar.app.removeFromAllWindows();
 }

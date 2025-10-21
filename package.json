@@ -9,37 +9,6 @@
     "type": "git",
     "url": "git@github.com:vitaminac/zotero-github-star-count.git"
   },
-  "contributors": [
-    {
-      "name": "Justin Ribeiro",
-      "email": "dalao1002@gmail.com",
-      "url": "https://justinribeiro.com"
-    },
-    {
-      "name": "Anton Beloglazov",
-      "url": "https://beloglazov.info/"
-    },
-    {
-      "name": "MaxKuehn",
-      "url": "https://github.com/MaxKuehn"
-    },
-    {
-      "name": "tete1030",
-      "url": "https://github.com/tete1030"
-    },
-    {
-      "name": "Nico",
-      "url": "https://github.com/nico-zck"
-    },
-    {
-      "name": "bitnikrbt",
-      "url": "https://github.com/bitnikrbt"
-    },
-    {
-      "name": "drevicko",
-      "url": "https://github.com/drevicko"
-    }
-  ],
   "scripts": {
     "package": "npm run clean && bash -c ./build.sh",
     "clean": "rm -rf coverage build",

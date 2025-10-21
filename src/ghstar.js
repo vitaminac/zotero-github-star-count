@@ -442,13 +442,12 @@ $__ghstar.app = {
     }
   },
   /**
-   * Verify is the Zotero item record has a title and creators (otherwise we
-   * can't query)
+   * Verify is the Zotero item record is Github repo
    * @param {ZoteroGenericItem} item
    * @return {boolean}
    */
   hasRequiredFields: function (item) {
-    return item.getField('title') !== '' && item.getCreators().length > 0;
+    return item.itemType === "computerProgram" && item.getField("url") && item.getField("url").startsWith("https://github.com/");
   },
   updateCollectionMenuEntry: async function () {
     const zoteroPane = $__ghstar.app.getActivePane();
@@ -556,7 +555,7 @@ $__ghstar.app = {
         $__ghstar.debugger.warn(
           `skipping item '${item.getField(
             'title',
-          )}': empty title or missing creator information'`,
+          )}': empty URL or non Github software'`,
         );
       } else {
         // check the prefs in case user override, don't use it on the first item

@@ -7,7 +7,10 @@ version=$(npm pkg get version | tr -d '"')
 rm -rf build
 mkdir -p build
 cd src
-zip -r ../build/zotero-github-star-count-${version}.xpi *
+# zip with consistent hash
+find . -type f -print0 | xargs -0 touch -t 202510210000
+LC_ALL=C find . -type f | sort > ../build/file-list.txt
+zip -0 -X -@ ../build/zotero-github-star-count-${version}.xpi < ../build/file-list.txt
 cd ..
 
 # patch plugin version

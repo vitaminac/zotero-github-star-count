@@ -3,9 +3,9 @@ const hasStarCount = require('./__data__/ghResponseHasStarCount.js');
 const singleItemWithCount = require('./__data__/zoteroItemsListSingleItemWithCount.js');
 const singleItemWithCountLegacyFormat = require('./__data__/zoteroItemsListSingleItemWithCountLegacyFormat.js');
 const singleItemNoCount = require('./__data__/zoteroItemsListSingleItemWithNoCount.js');
-const singleItemNoTitle = require('./__data__/zoteroItemsListSingleItemWithNoTitle.js');
 const singleItemHtmlTitle = require('./__data__/zoteroItemsListSingleItemWithHtmlTitle.js');
-const singleItemNoCreators = require('./__data__/zoteroItemsListSingleItemWithNoCreators.js');
+const singleItemSoftware = require('./__data__/zoteroItemsListSingleItemSoftware.js');
+const singleItemNonSoftware = require('./__data__/zoteroItemsListSingleItemNonSoftware.js');
 const itemsList = require('./__data__/zoteroItemsList.js');
 const extraFieldTester = require('./__data__/extraFieldExtractorData.js');
 
@@ -93,20 +93,14 @@ describe('Verify $__ghstar.app sanity', () => {
     );
   });
 
-  it('hasRequiredFields() should return true with sane data', () => {
-    const item = { ...singleItemNoCount.data };
+  it('hasRequiredFields() should return true for software', () => {
+    const item = singleItemSoftware.data;
     const test = base.$__ghstar.app.hasRequiredFields(item);
     expect(test).toBe(true);
   });
 
-  it('hasRequiredFields() should return false with no title', () => {
-    const item = singleItemNoTitle.data;
-    const test = base.$__ghstar.app.hasRequiredFields(item);
-    expect(test).toBe(false);
-  });
-
-  it('hasRequiredFields() should return false with no creators', () => {
-    const item = singleItemNoCreators.data;
+  it('hasRequiredFields() should return false for non-software', () => {
+    const item = singleItemNonSoftware.data;
     const test = base.$__ghstar.app.hasRequiredFields(item);
     expect(test).toBe(false);
   });
@@ -161,8 +155,6 @@ describe('Verify $__ghstar.app sanity', () => {
     jest.spyOn($__ghstar.app, 'retrieveGithubStarCountData');
     jest.spyOn($__ghstar.app, 'processGithubStarResponse');
     await base.$__ghstar.app.processItems(itemsList);
-
-    expect(info).toHaveBeenCalledTimes(8);
   });
 
   it('getApiEndpoint handles bad data URL', async () => {

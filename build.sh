@@ -7,16 +7,18 @@ version=$(npm pkg get version | tr -d '"')
 rm -rf build
 mkdir -p build
 cd src
-zip -r ../build/github-star-count-${version}.xpi *
+zip -r ../build/zotero-github-star-count-${version}.xpi *
 cd ..
 
-# patch the JSON file version
-jq --arg version "$version" '.addons."dalao1002@gmail.com".updates.[0].version |= "\($version)"' updates.json | sponge updates.json
+# patch plugin version
+sed -i -E "s/\"version\": *\"[^\"]+\"/\"version\": \"${version}\"/" updates.json
+sed -i -E "s/\"version\": *\"[^\"]+\"/\"version\": \"${version}\"/" src/manifest.json
 
-# patch the update link
+# patch update link
 updatelink="https://github.com/vitaminac/zotero-github-star-count/releases/download/v${version}/zotero-github-star-count-${version}.xpi"
-jq --arg updatelink "$updatelink" '.addons."dalao1002@gmail.com".updates.[0].update_link |= "\($updatelink)"' updates.json | sponge updates.json
+sed -i -E "s#\"update_link\": *\"[^\"]+\"#\"update_link\": \"${updatelink}\"#" updates.json
 
-# patch the hash for the XPI
+# patch XPI hash
 hash=$(sh -c 'sha256sum < "$1" | cut -d" " -f1' -- ./build/zotero-github-star-count-${version}.xpi)
-jq --arg hash "$hash" '.addons."dalao1002@gmail.com".updates.[0].update_hash |= "sha256:\($hash)"' updates.json | sponge updates.json
+sed -i -E "s/\"update_hash\": *\"[^\"]+\"/\"update_hash\": \"sha256:${hash}\"/" updates.json
+

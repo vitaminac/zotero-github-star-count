@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Github stars count",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Zotero plugin for fetching Github star.",
   "homepage_url": "https://github.com/vitaminac/zotero-github-star-count",
   "author": "vitaminac",

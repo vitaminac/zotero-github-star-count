@@ -7,7 +7,7 @@ version=$(npm pkg get version | tr -d '"')
 rm -rf build
 mkdir -p build
 cd src
-zip -r ../build/zotero-google-scholar-citation-count-${version}.xpi *
+zip -r ../build/github-star-count-${version}.xpi *
 cd ..
 
 # patch the JSON file version

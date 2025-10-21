@@ -1,6 +1,9 @@
 name: Release
 
-on: [push]
+on:
+  push:
+    tags:
+      - 'v*'
 
 permissions:
   contents: write
@@ -33,9 +36,9 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ github.ref_name }}
           generate_release_notes: true
           files: |
             build/*.xpi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-

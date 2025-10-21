@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # set the version for our plugin
-version="1.0.2"
+version="1.0.3"
 min_zotero_version="6.999"
 max_zotero_version="7.0.*"
 

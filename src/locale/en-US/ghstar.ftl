@@ -1,8 +1,7 @@
 ghstar-menuitem =
   .label = Update Github stars count
 ghstar-column-name = Github Star Count
-ghstar-lastupdated-column-name = Github Star Count Last Updated Date
-ghstar-relevancescore-column-name = Github Star Count Relative Relevance Score
+ghstar-ghStarLastUpdated-column-name = Github Star Count Last Updated Date
 ghstar-update-all =
   .label = Update All Github stars counts.
 ghstar-recapatcha-alert = Please enter the Captcha on the page that will now open and then re-try updating the citations, or wait a while to get unblocked by Google if the Captcha is not present.

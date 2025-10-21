@@ -166,11 +166,11 @@ describe('Verify $__ghstar.app sanity', () => {
 
   it('verify field key lookup in setColumnData', () => {
     const item = singleItemWithCount.data;
-    const citeCount = base.$__ghstar.app.setColumnData(item, 'citationCount');
+    const citeCount = base.$__ghstar.app.setColumnData(item, 'ghStarCount');
     expect(citeCount).toBe(1000);
 
-    const lastUpdated = base.$__ghstar.app.setColumnData(item, 'lastUpdated');
-    expect(lastUpdated).toBe('1/1/2025, 12:00:00 AM');
+    const ghStarLastUpdated = base.$__ghstar.app.setColumnData(item, 'ghStarLastUpdated');
+    expect(ghStarLastUpdated).toBe('1/1/2025, 12:00:00 AM');
 
     const relevanceScore = base.$__ghstar.app.setColumnData(
       item,

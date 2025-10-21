@@ -280,12 +280,8 @@ $__ghstar.app = {
 
     const columnLabel = await doc.l10n.formatValue('ghstar-column-name');
     const columnLastUpdateLabel = await doc.l10n.formatValue(
-      'ghstar-lastupdated-column-name',
+      'ghstar-ghStarLastUpdated-column-name',
     );
-    const columnRelevanceScoreLabel = await doc.l10n.formatValue(
-      'ghstar-relevancescore-column-name',
-    );
-
     $__ghstar.app.__registeredDataKey =
       await Zotero.ItemTreeManager.registerColumns([
         {
@@ -293,7 +289,7 @@ $__ghstar.app = {
           label: columnLabel,
           pluginID: 'dalao1002@gmail.com',
           dataProvider: (item, dataKey) => {
-            return this.setColumnData(item, 'citationCount');
+            return this.setColumnData(item, 'ghStarCount');
           },
           zoteroPersist: ['width', 'hidden', 'sortDirection'],
         },
@@ -302,19 +298,10 @@ $__ghstar.app = {
           label: columnLastUpdateLabel,
           pluginID: 'dalao1002@gmail.com',
           dataProvider: (item, dataKey) => {
-            return this.setColumnData(item, 'lastUpdated');
+            return this.setColumnData(item, 'ghStarLastUpdated');
           },
           zoteroPersist: ['width', 'hidden', 'sortDirection'],
-        },
-        {
-          dataKey: 'ghstarRelevanceScore',
-          label: columnRelevanceScoreLabel,
-          pluginID: 'dalao1002@gmail.com',
-          dataProvider: (item, dataKey) => {
-            return this.setColumnData(item, 'relevanceScore');
-          },
-          zoteroPersist: ['width', 'hidden', 'sortDirection'],
-        },
+        }
       ]);
 
     $__ghstar.app.registerNotifier();
@@ -369,7 +356,7 @@ $__ghstar.app = {
   /**
    * GHSTAR Extra Data Type
    * @typedef {Object} GHStarExtra
-   * @property {number} citationCount - The GS citation count
+   * @property {number} ghStarCount - The GS citation count
    * @property {date} lateUpdated - The last time we pulled the data.
    * @property {number} relevanceScore - The relative relevance of the citations
    */
@@ -380,8 +367,8 @@ $__ghstar.app = {
    */
   extraFieldExtractor: function (extraString) {
     const parts = {
-      citationCount: 0,
-      lastUpdated: '',
+      ghStarCount: 0,
+      ghStarLastUpdated: '',
       relevanceScore: 0,
     };
     try {
@@ -402,10 +389,10 @@ $__ghstar.app = {
           matches = splitter.concat(matches);
         }
 
-        parts.citationCount = parseInt(matches[1] ?? parts?.citationCount);
-        parts.lastUpdated = matches[2]
+        parts.ghStarCount = parseInt(matches[1] ?? parts?.ghStarCount);
+        parts.ghStarLastUpdated = matches[2]
           ? new Date(matches[2]).toLocaleString()
-          : parts?.lastUpdated;
+          : parts?.ghStarLastUpdated;
         parts.relevanceScore =
           parseFloat(matches[3] ?? parts?.relevanceScore) || 0;
       }
@@ -754,23 +741,6 @@ $__ghstar.app = {
           `parsing star count ${count}`,
     );
     return count;
-  },
-  /**
-   * Number of citations since publication (citations / weeksSincePublication)
-   * Proposed by @c-hoffmann
-   */
-  calculateRelativeRelevance: function (date, citationCount) {
-    const publicationDate = date;
-    const weeksSincePublication = Math.ceil(
-      (new Date() - new Date(publicationDate)) / (1000 * 60 * 60 * 24 * 7),
-    );
-    const citationRatio = citationCount / weeksSincePublication;
-    const formattedRatio = citationRatio.toFixed(2);
-
-    if (isNaN(formattedRatio)) {
-      return 0;
-    }
-    return formattedRatio;
   },
 };
 

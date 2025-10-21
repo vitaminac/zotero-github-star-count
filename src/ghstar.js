@@ -594,8 +594,8 @@ $__ghstar.app = {
           await $__ghstar.util.sleep(queueTime);
         }
 
-        const response = await this.retrieveCitationData(item);
-        await this.processCitationResponse(
+        const response = await this.retrieveGithubStarCountData(item);
+        await this.processGithubStarResponse(
           response.status,
           response.responseText,
           1000,
@@ -673,7 +673,7 @@ $__ghstar.app = {
    * @param {ZoteroGenericItem} item Used to generate the fetch() string
    * @param {function} callback callback on complete
    */
-  retrieveCitationData: async function (item) {
+  retrieveGithubStarCountData: async function (item) {
     const targetUrl = await this.generateItemUrl(item);
     return $__ghstar.util.request({ method: 'GET', url: targetUrl });
   },
@@ -686,7 +686,7 @@ $__ghstar.app = {
    * @param {ZoteroGenericItem} item the item we're looking up
    * @param {function} callback the updateItem callback.
    */
-  processCitationResponse: async function (
+  processGithubStarResponse: async function (
     requestStatus,
     requestData,
     requestRetry,
@@ -697,59 +697,10 @@ $__ghstar.app = {
     let retryResponse;
     switch (requestStatus) {
       case 200:
-        if (!$__ghstar.util.hasRecaptcha(requestData)) {
-          if ($__ghstar.util.hasCitationResults(requestData)) {
-            $__ghstar.debugger.info(
-              `Google Scholar returned search result, parsing cite count`,
-            );
-            this.updateItem(item, this.getCiteCount(requestData));
-          } else {
-            $__ghstar.debugger.warn(
-              `Google Scholar found no search result for requested item: ${targetUrl}`,
-            );
-          }
-        } else {
-          $__ghstar.debugger.warn(
-            'Google Scholar asking for recaptcha, opening window.',
-          );
-          await $__ghstar.util.openRecaptchaWindow(targetUrl);
-          retryResponse = await this.retrieveCitationData(item);
-          await this.processCitationResponse(
-            retryResponse.status,
-            retryResponse.responseText,
-            1000,
-            retryResponse.responseURL,
-            item,
-          );
-        }
-        break;
-      case 403:
-        $__ghstar.debugger.warn(
-          'Google Scholar thinks we are sus, opening window.',
+        $__ghstar.debugger.info(
+          `Github API returned result, parsing star count`,
         );
-        await $__ghstar.util.openRecaptchaWindow(targetUrl);
-        retryResponse = await this.retrieveCitationData(item);
-        await this.processCitationResponse(
-          retryResponse.status,
-          retryResponse.responseText,
-          1000,
-          retryResponse.responseURL,
-          item,
-        );
-        break;
-      case 404:
-        $__ghstar.debugger.error(
-          `Google Scholar could not find the requested page.`,
-        );
-        break;
-      case 429:
-        if (requestRetry) {
-          $__ghstar.debugger.warn(
-            `Google Scholar asks for retry after ${requestRetry} seconds, re-queuing request.`,
-          );
-          await $__ghstar.util.sleep(requestRetry * 1000);
-          await this.retrieveCitationData(item);
-        }
+        this.updateItem(item, this.getStarCount(requestData));
         break;
       default:
         $__ghstar.debugger.error(
@@ -783,73 +734,17 @@ $__ghstar.app = {
   },
 
   /**
-   * Generate a Google Scholar URL to use to fetch data
+   * Generate a Github API URL to use to fetch data
    * @param {ZoteroGenericItem} item
    * @returns string
    */
   generateItemUrl: async function (item) {
     const apiEndpoint = await $__ghstar.app.getApiEndpoint();
-    const useSearchTitleFuzzyMatch = Zotero.Prefs.get(
-      'extensions.zotero.ghstar.useSearchTitleFuzzyMatch',
-      $__ghstar.app.__preferenceDefaults.useSearchTitleFuzzyMatch,
-    );
 
-    const useSearchAuthorsMatch = Zotero.Prefs.get(
-      'extensions.zotero.ghstar.useSearchAuthorsMatch',
-      $__ghstar.app.__preferenceDefaults.useSearchAuthorsMatch,
-    );
+    // get URL field
+    const sanitizedUrl = item.getField('url') || '';
 
-    const useDateRangeMatch = Zotero.Prefs.get(
-      'extensions.zotero.ghstar.useDateRangeMatch',
-      $__ghstar.app.__preferenceDefaults.useDateRangeMatch,
-    );
-
-    // Strip HTML from titles as breaks matching in GS
-    const parser = new DOMParser();
-    const sanitizedTitle =
-      parser.parseFromString(item.getField('title'), 'text/html').body
-        .textContent || '';
-
-    let titleSearchString;
-    if (useSearchTitleFuzzyMatch) {
-      $__ghstar.debugger.info(
-        `Search Param: Using Fuzzy Title Match per Preferences`,
-      );
-      titleSearchString = `${sanitizedTitle}`;
-    } else {
-      // this is a dead match; kinda risky for hand-entered data but match is
-      // good on Zotero grabs
-      titleSearchString = `"${sanitizedTitle}"`;
-    }
-
-    let paramAuthors = '';
-    if (useSearchAuthorsMatch) {
-      $__ghstar.debugger.info(
-        `Search Param: Adding Authors Match per Preferences`,
-      );
-      /**
-       * @type array
-       */
-      const creators = item.getCreators() || [];
-
-      if (creators.length > 0) {
-        paramAuthors = `&as_sauthors=${creators
-          .map((author) => author.lastName)
-          .slice(0, 5)
-          .join('+')}`;
-      }
-    }
-
-    let paramYearRange = '';
-    if (useDateRangeMatch) {
-      $__ghstar.debugger.info(`Search Param: Adding Date Range per Preferences`);
-      const year = parseInt(item.getField('year'));
-      if (year) {
-        paramYearRange = `&as_ylo=${year - 2}&as_yhi=${year + 2}`;
-      }
-    }
-
-    const targetUrl = `${apiEndpoint.href}scholar?hl=en&q=${titleSearchString}&as_epq=&as_occt=title&num=1${paramAuthors}${paramYearRange}`;
+    sanitizedUrl.replace(/^https:\/\/github.com\//, `${apiEndpoint.href}/repos/`)
     $__ghstar.debugger.info(`Search Endpoint Ready: ${targetUrl}`);
 
     return encodeURI(targetUrl);
@@ -881,23 +776,8 @@ $__ghstar.app = {
    * @param {string} responseText The raw string data to look for cited data
    * @returns number
    */
-  getCiteCount: function (responseText) {
-    const citePrefix = `>${$__ghstar.app.__citedByPrefix}`;
-    const citePrefixLen = citePrefix.length;
-    const citeCountStart = responseText.indexOf(citePrefix);
-
-    if (citeCountStart === -1) {
-      if (responseText.indexOf('class="gs_rt"') === -1) {
-        return -1;
-      } else {
-        return 0;
-      }
-    } else {
-      const citeCountEnd = responseText.indexOf('<', citeCountStart);
-      const citeStr = responseText.substring(citeCountStart, citeCountEnd);
-      const citeCount = citeStr.substring(citePrefixLen);
-      return parseInt(citeCount.trim());
-    }
+  getStarCount: function (responseText) {
+    return JSON.parse(responseText).stargazers_count;
   },
   /**
    * Number of citations since publication (citations / weeksSincePublication)

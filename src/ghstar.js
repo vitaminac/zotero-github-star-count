@@ -698,7 +698,7 @@ $__ghstar.app = {
     switch (requestStatus) {
       case 200:
         $__ghstar.debugger.info(
-          `Github API returned result, parsing star count`,
+          "Github API returned result, parsing star count",
         );
         this.updateItem(item, this.getStarCount(requestData));
         break;
@@ -742,10 +742,10 @@ $__ghstar.app = {
     const apiEndpoint = await $__ghstar.app.getApiEndpoint();
 
     // get URL field
-    const targetUrl = item.getField('url') || '';
+    const url = item.getField('url') || '';
 
-    targetUrl.replace(/^https:\/\/github.com\//, `${apiEndpoint.href}/repos/`)
-    $__ghstar.debugger.info(`Search Endpoint Ready: ${targetUrl}`);
+    const targetUrl = url.replace(/^https:\/\/github.com\//, `${apiEndpoint.href}repos/`);
+    $__ghstar.debugger.info(`Github API Endpoint Ready: ${targetUrl}`);
 
     return encodeURI(targetUrl);
   },
@@ -777,7 +777,11 @@ $__ghstar.app = {
    * @returns number
    */
   getStarCount: function (responseText) {
-    return JSON.parse(responseText).stargazers_count;
+    const count = JSON.parse(responseText).stargazers_count;
+    $__ghstar.debugger.info(
+          `parsing star count ${count}`,
+    );
+    return count;
   },
   /**
    * Number of citations since publication (citations / weeksSincePublication)

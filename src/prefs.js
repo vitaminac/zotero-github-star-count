@@ -7,5 +7,5 @@ pref('extensions.zotero.ghstar.useSearchAuthorsMatch', true);
 pref('extensions.zotero.ghstar.useDateRangeMatch', false);
 pref(
   'extensions.zotero.ghstar.defaultGsApiEndpoint',
-  'https://scholar.google.com',
+  'https://api.github.com',
 );

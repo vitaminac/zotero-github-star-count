@@ -239,7 +239,7 @@ $__ghstar.app = {
     useSearchTitleFuzzyMatch: false,
     useSearchAuthorsMatch: true,
     useDateRangeMatch: false,
-    defaultGsApiEndpoint: 'https://scholar.google.com',
+    defaultGsApiEndpoint: 'https://api.github.com',
   },
   /**
    * Initialize our world.

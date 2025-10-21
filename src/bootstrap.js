@@ -15,7 +15,7 @@ async function startup({ id, version, rootURI }) {
   Services.scriptloader.loadSubScript(filePath);
 
   Zotero.PreferencePanes.register({
-    pluginID: 'justin@justinribeiro.com',
+    pluginID: 'dalao1002@gmail.com',
     src: `${rootURI}prefs.xhtml`,
   });
 

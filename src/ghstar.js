@@ -314,7 +314,7 @@ $__ghstar.app = {
         {
           dataKey: 'ghstarCount',
           label: columnLabel,
-          pluginID: 'justin@justinribeiro.com',
+          pluginID: 'dalao1002@gmail.com',
           dataProvider: (item, dataKey) => {
             return this.setColumnData(item, 'citationCount');
           },
@@ -323,7 +323,7 @@ $__ghstar.app = {
         {
           dataKey: 'ghstarCountUpdated',
           label: columnLastUpdateLabel,
-          pluginID: 'justin@justinribeiro.com',
+          pluginID: 'dalao1002@gmail.com',
           dataProvider: (item, dataKey) => {
             return this.setColumnData(item, 'lastUpdated');
           },
@@ -332,7 +332,7 @@ $__ghstar.app = {
         {
           dataKey: 'ghstarRelevanceScore',
           label: columnRelevanceScoreLabel,
-          pluginID: 'justin@justinribeiro.com',
+          pluginID: 'dalao1002@gmail.com',
           dataProvider: (item, dataKey) => {
             return this.setColumnData(item, 'relevanceScore');
           },

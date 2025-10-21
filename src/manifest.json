@@ -11,7 +11,7 @@
   },
   "applications": {
     "zotero": {
-      "id": "justin@justinribeiro.com",
+      "id": "dalao1002@gmail.com",
       "update_url": "https://raw.githubusercontent.com/justinribeiro/zotero-google-scholar-citation-count/master/update.json",
       "strict_min_version": "6.999",
       "strict_max_version": "7.*.*"

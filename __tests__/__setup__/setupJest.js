@@ -63,7 +63,7 @@ global.XMLHttpRequest = jest.fn().mockImplementation(() => {
   return {
     readyState: 4,
     status: 200,
-    responseText: JSON.stringify({ message: 'Justin mocking response' }),
+    responseText: JSON.stringify({ message: 'mocking response' }),
     open: jest.fn(),
     send: jest.fn().mockImplementation(function () {
       this.onreadystatechange();

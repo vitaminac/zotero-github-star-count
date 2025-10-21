@@ -118,29 +118,6 @@ $__ghstar.util = {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   },
   /**
-   * Checks to validate whether the source code has a recaptcha within it
-   * @param {string} source source code to parse and search for recaptcha
-   * include
-   * @return {boolean}
-   */
-  hasRecaptcha: function (source) {
-    // if the onload is there, we know it's going to inject the iframe as
-    // opposed to just a general include
-    return source.includes('google.com/recaptcha/api.js?onload');
-  },
-  /**
-   * Checks to validate if we have a search result in the data
-   * @param {string} source source code to parse and search for data
-   * @return {boolean}
-   */
-  hasCitationResults: function (source) {
-    return (
-      source.includes('class="gs_r gs_or gs_scl"') ||
-      source.includes('class="gs_fl gs_flb gs_invis"') ||
-      source.includes('class="gs_fl gs_flb"')
-    );
-  },
-  /**
    * Add zero's to a given string
    * @param {string} string the string to pad with zeros
    * @param {number} length the length of the string
@@ -777,7 +754,7 @@ $__ghstar.app = {
    * @returns number
    */
   getStarCount: function (responseText) {
-    const count = JSON.parse(responseText).stargazers_count;
+    const count = JSON.parse(responseText)?.stargazers_count || 0;
     $__ghstar.debugger.info(
           `parsing star count ${count}`,
     );

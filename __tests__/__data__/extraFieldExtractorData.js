@@ -25,7 +25,7 @@ const data = [
     },
   },
   {
-    string: 'GHSTAR: 0000010 2025-01-01T08:00:00.000Z \n',
+    string: 'GHSTAR: 0000010 2024-12-31T23:00:00.000Z \n',
     expectedResult: {
       citationCount: 10,
       lastUpdated: '1/1/2025, 12:00:00 AM',
@@ -34,7 +34,7 @@ const data = [
   },
   {
     string:
-      'GHSTAR: 0000400 2025-01-01T08:00:00.000Z \nPublisher: SAGE Publications Inc',
+      'GHSTAR: 0000400 2024-12-31T23:00:00.000Z \nPublisher: SAGE Publications Inc',
     expectedResult: {
       citationCount: 400,
       lastUpdated: '1/1/2025, 12:00:00 AM',
@@ -43,7 +43,7 @@ const data = [
   },
   {
     string:
-      'some custom data on top\nGSCC: 0000401 2025-01-01T08:00:00.000Z \nPublisher: SAGE Publications Inc',
+      'some custom data on top\nGHSTAR: 0000401 2024-12-31T23:00:00.000Z \nPublisher: SAGE Publications Inc',
     expectedResult: {
       citationCount: 401,
       lastUpdated: '1/1/2025, 12:00:00 AM',
@@ -52,7 +52,7 @@ const data = [
   },
   {
     string:
-      'some custom data on top\nGSCC: 0000401 2025-01-01T08:00:00.000Z 2.2\nPublisher: SAGE Publications Inc',
+      'some custom data on top\nGHSTAR: 0000401 2024-12-31T23:00:00.000Z 2.2\nPublisher: SAGE Publications Inc',
     expectedResult: {
       citationCount: 401,
       lastUpdated: '1/1/2025, 12:00:00 AM',
@@ -61,7 +61,7 @@ const data = [
   },
   {
     string:
-      'GHSTAR: 0010401 2025-01-01T08:00:00.000Z 2.4\nPublisher: SAGE Publications Inc',
+      'GHSTAR: 0010401 2024-12-31T23:00:00.000Z 2.4\nPublisher: SAGE Publications Inc',
     expectedResult: {
       citationCount: 10401,
       lastUpdated: '1/1/2025, 12:00:00 AM',
@@ -70,7 +70,7 @@ const data = [
   },
   {
     string:
-      'GHSTAR: 0010433 2025-01-01T08:00:00.000Z 2.5 \n',
+      'GHSTAR: 0010433 2024-12-31T23:00:00.000Z 2.5 \n',
     expectedResult: {
       citationCount: 10433,
       lastUpdated: '1/1/2025, 12:00:00 AM',
@@ -79,7 +79,7 @@ const data = [
   },
   {
     string:
-      'GHSTAR: 0000433 2025-01-01T08:00:00.000Z 1.5',
+      'GHSTAR: 0000433 2024-12-31T23:00:00.000Z 1.5',
     expectedResult: {
       citationCount: 433,
       lastUpdated: '1/1/2025, 12:00:00 AM',
@@ -88,7 +88,7 @@ const data = [
   },
   {
     string:
-      'GHSTAR:0000433 2025-01-01T08:00:00.000Z 1.5 ',
+      'GHSTAR:0000433 2024-12-31T23:00:00.000Z 1.5 ',
     expectedResult: {
       citationCount: 433,
       lastUpdated: '1/1/2025, 12:00:00 AM',
@@ -97,7 +97,7 @@ const data = [
   },
   {
     string:
-      'GHSTAR:0000433 2025-01-01T08:00:00.000Z ',
+      'GHSTAR:0000433 2024-12-31T23:00:00.000Z ',
     expectedResult: {
       citationCount: 433,
       lastUpdated: '1/1/2025, 12:00:00 AM',

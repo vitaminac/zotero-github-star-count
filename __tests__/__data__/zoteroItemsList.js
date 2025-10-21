@@ -6,6 +6,9 @@ const getCreators = function () {
   return this.creators;
 };
 
+const setField = function () {
+};
+
 const data = [
   {
     key: 'LHX8PRC3',
@@ -17,7 +20,7 @@ const data = [
     language: 'en',
     shortTitle: 'From transactional to transformational leadership',
     libraryCatalog: 'ScienceDirect',
-    url: 'https://www.sciencedirect.com/science/article/pii/009026169090061S',
+    url: 'https://github.com/vitaminac/zotero-github-star-count',
     accessDate: '2021-09-22T20:55:33Z',
     extra: '',
     volume: '18',
@@ -41,6 +44,7 @@ const data = [
     dateModified: '2021-09-29T00:42:27Z',
     getField,
     getCreators,
+    setField
   },
 ];
 

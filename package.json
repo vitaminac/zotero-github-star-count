@@ -10,6 +10,7 @@
     "url": "git@github.com:vitaminac/zotero-github-star-count.git"
   },
   "scripts": {
+    "prepackage": "npm test",
     "package": "npm run clean && bash -c ./build.sh",
     "clean": "rm -rf coverage build",
     "test": "jest",

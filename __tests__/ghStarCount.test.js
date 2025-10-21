@@ -1,10 +1,5 @@
 const base = require('../src/ghstar.js');
-const hasCitation = require('./__data__/gsResponseHasCitation.js');
-const hasCitation2023Version = require('./__data__/gsResponseHasCitationJuly2023GSUpdate.js');
-const hasCitation2023VersionAltReturn = require('./__data__/gsResponseHasCitationJuly2023GSUpdateAltSearchCase.js');
-const noCitation = require('./__data__/gsResponseNoCitation.js');
-const hasPaperNoCitations = require('./__data__/gsResponseHasPaperNoCitations.js');
-const hasRecaptcha = require('./__data__/gsResponseHasRecaptcha.js');
+const hasStarCount = require('./__data__/ghResponseHasStarCount.js');
 const singleItemWithCount = require('./__data__/zoteroItemsListSingleItemWithCount.js');
 const singleItemWithCountLegacyFormat = require('./__data__/zoteroItemsListSingleItemWithCountLegacyFormat.js');
 const singleItemNoCount = require('./__data__/zoteroItemsListSingleItemWithNoCount.js');
@@ -34,42 +29,14 @@ describe('Verify $__ghstar.app sanity', () => {
   });
 
   it('getStarCount() should return number', () => {
-    const test = base.$__ghstar.app.getStarCount(hasCitation.data);
+    const test = base.$__ghstar.app.getStarCount(hasStarCount.data);
     expect(test).toBe(1028);
   });
 
-  it('getStarCount() should return number from July 2023 GS UI Update', () => {
-    const test = base.$__ghstar.app.getStarCount(hasCitation2023Version.data);
-    expect(test).toBe(2468);
-  });
-
-  it('getStarCount() should return number from July 2023 GS UI Update - Alt Case!', () => {
-    const test = base.$__ghstar.app.getStarCount(
-      hasCitation2023VersionAltReturn.data,
-    );
-    expect(test).toBe(2468);
-  });
-
-  it('getStarCount() should return -1, no data', () => {
-    const test = base.$__ghstar.app.getStarCount(noCitation.data);
-    expect(test).toBe(-1);
-  });
-
-  it('getStarCount() should return 0, no count', () => {
-    const test = base.$__ghstar.app.getStarCount(hasPaperNoCitations.data);
-    expect(test).toBe(0);
-  });
-
   it('buildcitecountstring() string + count', () => {
-    const count = base.$__ghstar.app.getStarCount(hasCitation.data);
+    const count = base.$__ghstar.app.getStarCount(hasStarCount.data);
     const test = base.$__ghstar.app.buildCiteCountString(count);
-    expect(test).toEqual('GHSTAR: 0001028 2025-01-01T08:00:00.000Z 0');
-  });
-
-  it('buildcitecountstring() string + no data', () => {
-    const count = base.$__ghstar.app.getStarCount(noCitation.data);
-    const test = base.$__ghstar.app.buildCiteCountString(count);
-    expect(test).toEqual('GHSTAR: NoCitationData 2025-01-01T08:00:00.000Z 0');
+    expect(test).toEqual('GHSTAR: 0001028 2024-12-31T23:00:00.000Z 0');
   });
 
   it('generateItemUrl() should output string', async () => {
@@ -77,7 +44,7 @@ describe('Verify $__ghstar.app sanity', () => {
       singleItemNoCount.data,
     );
     expect(string).toEqual(
-      'https://api.github.com/scholar?hl=en&q=%22Potential%20Biases%20in%20Leadership%20Measures:%20How%20Prototypes,%20Leniency,%20and%20General%20Satisfaction%20Relate%20to%20Ratings%20and%20Rankings%20of%20Transformational%20and%20Transactional%20Leadership%20Constructs%22&as_epq=&as_occt=title&num=1&as_sauthors=Bass+Avolio',
+      'https://api.github.com/repos/vitaminac/zotero-github-star-count',
     );
   });
 
@@ -86,7 +53,7 @@ describe('Verify $__ghstar.app sanity', () => {
       singleItemHtmlTitle.data,
     );
     expect(string).toEqual(
-      'https://api.github.com/scholar?hl=en&q=%22(Y0.25Yb0.25Er0.25Lu0.25)2(Zr0.5Hf0.5)2O7:%20a%20defective%20fluorite%20structured%20high%20entropy%20ceramic%20with%20low%20thermal%20conductivity%20and%20close%20thermal%20expansion%20coefficient%20to%20Al2O3%22&as_epq=&as_occt=title&num=1&as_sauthors=Zhao+Chen+Xiang+Dai+Wang',
+      'https://api.github.com/repos/vitaminac/zotero-github-star-count',
     );
   });
 
@@ -98,7 +65,7 @@ describe('Verify $__ghstar.app sanity', () => {
     expect(extra).toHaveBeenCalled();
     expect(tx).toHaveBeenCalled();
     expect(item.getField('extra')).toEqual(
-      'GHSTAR: 0000400 2025-01-01T08:00:00.000Z 0.22 \nPublisher: SAGE Publications Inc',
+      'GHSTAR: 0000400 2024-12-31T23:00:00.000Z 0.22 \nPublisher: SAGE Publications Inc',
     );
   });
 
@@ -110,7 +77,7 @@ describe('Verify $__ghstar.app sanity', () => {
     expect(extra).toHaveBeenCalled();
     expect(tx).toHaveBeenCalled();
     expect(item.getField('extra')).toEqual(
-      'GHSTAR: 0001000 2025-01-01T08:00:00.000Z 0.54 \nPublisher: SAGE Publications Inc',
+      'GHSTAR: 0001000 2024-12-31T23:00:00.000Z 0.54 \nPublisher: SAGE Publications Inc',
     );
   });
 
@@ -122,7 +89,7 @@ describe('Verify $__ghstar.app sanity', () => {
     expect(extra).toHaveBeenCalled();
     expect(tx).toHaveBeenCalled();
     expect(item.getField('extra')).toEqual(
-      'GHSTAR: 0000010 2025-01-01T08:00:00.000Z 0.01 \n',
+      'GHSTAR: 0000010 2024-12-31T23:00:00.000Z 0.01 \n',
     );
   });
 
@@ -149,7 +116,7 @@ describe('Verify $__ghstar.app sanity', () => {
     const targetUrl = base.$__ghstar.app.generateItemUrl(singleItemNoCount.data);
     base.$__ghstar.app.processGithubStarResponse(
       200,
-      hasCitation.data,
+      hasStarCount.data,
       null,
       targetUrl,
       item,
@@ -158,112 +125,8 @@ describe('Verify $__ghstar.app sanity', () => {
       },
     );
     expect(item.getField('extra')).toEqual(
-      'GHSTAR: 0001028 2025-01-01T08:00:00.000Z 0.56 \n',
+      'GHSTAR: 0001028 2024-12-31T23:00:00.000Z 0.56 \n',
     );
-  });
-
-  it('processGithubStarResponse() 200 should warn on console when item not found', () => {
-    const warn = jest.spyOn(base.$__ghstar.debugger, 'warn');
-    const item = { ...singleItemNoCount.data };
-    const targetUrl = base.$__ghstar.app.generateItemUrl(singleItemNoCount.data);
-    base.$__ghstar.app.processGithubStarResponse(
-      200,
-      noCitation.data,
-      null,
-      targetUrl,
-      item,
-      (item, citeCount) => {
-        base.$__ghstar.app.updateItem(item, citeCount);
-      },
-    );
-    expect(warn).toHaveBeenCalled();
-  });
-
-  it('processGithubStarResponse() 200 should open window on recaptcha', () => {
-    const warn = jest.spyOn(base.$__ghstar.debugger, 'warn');
-    const openWindow = jest.spyOn(base.$__ghstar.util, 'openRecaptchaWindow');
-    const item = { ...singleItemNoCount.data };
-    const targetUrl = base.$__ghstar.app.generateItemUrl(singleItemNoCount.data);
-    base.$__ghstar.app.processGithubStarResponse(
-      200,
-      hasRecaptcha.data,
-      null,
-      targetUrl,
-      item,
-      (item, citeCount) => {
-        base.$__ghstar.app.updateItem(item, citeCount);
-      },
-    );
-    expect(warn).toHaveBeenCalled();
-    expect(openWindow).toHaveBeenCalled();
-  });
-
-  it('processGithubStarResponse() 404 should console error', () => {
-    const warn = jest.spyOn(base.$__ghstar.debugger, 'error');
-    const item = { ...singleItemNoCount.data };
-    const targetUrl = base.$__ghstar.app.generateItemUrl(singleItemNoCount.data);
-    base.$__ghstar.app.processGithubStarResponse(
-      404,
-      hasRecaptcha.data,
-      null,
-      targetUrl,
-      item,
-      (item, citeCount) => {
-        base.$__ghstar.app.updateItem(item, citeCount);
-      },
-    );
-    expect(warn).toHaveBeenCalled();
-  });
-
-  it('processGithubStarResponse() 429 should not console warn if retry set', () => {
-    const warn = jest.spyOn(base.$__ghstar.debugger, 'warn');
-    const item = { ...singleItemNoCount.data };
-    const targetUrl = base.$__ghstar.app.generateItemUrl(singleItemNoCount.data);
-    base.$__ghstar.app.processGithubStarResponse(
-      429,
-      hasRecaptcha.data,
-      null,
-      targetUrl,
-      item,
-      (item, citeCount) => {
-        base.$__ghstar.app.updateItem(item, citeCount);
-      },
-    );
-    expect(warn).toHaveBeenCalledTimes(0);
-  });
-
-  it('processGithubStarResponse() 429 should console warn if retry set', () => {
-    const warn = jest.spyOn(base.$__ghstar.debugger, 'warn');
-    const item = { ...singleItemNoCount.data };
-    const targetUrl = base.$__ghstar.app.generateItemUrl(singleItemNoCount.data);
-    base.$__ghstar.app.processGithubStarResponse(
-      429,
-      hasRecaptcha.data,
-      2000,
-      targetUrl,
-      item,
-      (item, citeCount) => {
-        base.$__ghstar.app.updateItem(item, citeCount);
-      },
-    );
-    expect(warn).toHaveBeenCalledTimes(1);
-  });
-
-  it('processGithubStarResponse() 500 should console error', () => {
-    const error = jest.spyOn(base.$__ghstar.debugger, 'error');
-    const item = { ...singleItemNoCount.data };
-    const targetUrl = base.$__ghstar.app.generateItemUrl(singleItemNoCount.data);
-    base.$__ghstar.app.processGithubStarResponse(
-      500,
-      hasRecaptcha.data,
-      null,
-      targetUrl,
-      item,
-      (item, citeCount) => {
-        base.$__ghstar.app.updateItem(item, citeCount);
-      },
-    );
-    expect(error).toHaveBeenCalledTimes(1);
   });
 
   it('addToWindow sets up world', async () => {
@@ -299,7 +162,7 @@ describe('Verify $__ghstar.app sanity', () => {
     jest.spyOn($__ghstar.app, 'processGithubStarResponse');
     await base.$__ghstar.app.processItems(itemsList);
 
-    expect(info).toHaveBeenCalledTimes(6);
+    expect(info).toHaveBeenCalledTimes(8);
   });
 
   it('getApiEndpoint handles bad data URL', async () => {

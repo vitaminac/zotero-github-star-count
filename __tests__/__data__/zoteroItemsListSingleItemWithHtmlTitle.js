@@ -31,7 +31,7 @@ const data = helpers.createItem({
   DOI: '10.1016/j.jmst.2019.08.018',
   ISSN: '10050302',
   shortTitle: '(Y0.25Yb0.25Er0.25Lu0.25)2(Zr0.5Hf0.5)2O7',
-  url: 'https://linkinghub.elsevier.com/retrieve/pii/S1005030219303329',
+  url: 'https://github.com/vitaminac/zotero-github-star-count',
   accessDate: '2024-11-21T17:07:44Z',
   archive: '',
   archiveLocation: '',

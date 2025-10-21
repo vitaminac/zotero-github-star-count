@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "name": "Google Scholar Citation Count",
+  "name": "Github stars count",
   "version": "4.3.0",
   "description": "Zotero plugin for fetching numbers of citations from Google Scholar.",
   "homepage_url": "https://github.com/justinribeiro/zotero-google-scholar-citation-count",

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # set the version for our plugin
-version=$(npm pkg get version | tr -d '"')
+version="1.0.2"
 min_zotero_version="6.999"
 max_zotero_version="7.0.*"
 
@@ -15,6 +15,7 @@ zip -0 -X -@ ../build/zotero-github-star-count-${version}.xpi < ../build/file-li
 cd ..
 
 # patch plugin version
+sed -i -E "s/\"version\": *\"[^\"]+\"/\"version\": \"${version}\"/" package.json
 sed -i -E "s/\"version\": *\"[^\"]+\"/\"version\": \"${version}\"/" updates.json
 sed -i -E "s/\"version\": *\"[^\"]+\"/\"version\": \"${version}\"/" src/manifest.json
 sed -i -E "s/\"strict_min_version\": *\"[^\"]+\"/\"strict_min_version\": \"${min_zotero_version}\"/" updates.json

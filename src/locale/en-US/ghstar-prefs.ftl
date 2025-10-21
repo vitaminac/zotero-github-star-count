@@ -19,8 +19,8 @@ preferences-ghstar-useSearchAuthorsMatch-cb =
 preferences-ghstar-api-endpoint = Google Scholar API Endpoint
 preferences-ghstar-api-endpoint-explain = If you cannot access Google Scholar due to restrictions in your locale, change this to a proxy or regional Google Scholar domain.
 preferences-ghstar-defaultGsApiEndpoint = Google Scholar API Endpoint (default: https://api.github.com/)
-preferences-ghstar-useAutoSearch = Automatically Update Citation Count on Add
+preferences-ghstar-useAutoSearch = Automatically Update Github Star Count on Add
 preferences-ghstar-useAutoSearch-explain = Automatically search and update the citation count when an item is added to the library.
 preferences-ghstar-useAutoSearch-cb =
-  .label = Add Citation Count Automatically when Item added to Library (default: false)
+  .label = Add Github Star Count Automatically when Item added to Library (default: false)
 

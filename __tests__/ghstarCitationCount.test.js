@@ -304,7 +304,7 @@ describe('Verify $__ghstar.app sanity', () => {
 
   it('getApiEndpoint handles bad data URL', async () => {
     const alert = jest.spyOn(global.window, 'alert');
-    base.$__ghstar.app.__preferenceDefaults.defaultGsApiEndpoint = 'gibbgerish';
+    base.$__ghstar.app.__preferenceDefaults.defaultGithubApiEndpoint = 'gibbgerish';
     await base.$__ghstar.app.getApiEndpoint();
 
     expect(alert).toHaveBeenCalledTimes(1);

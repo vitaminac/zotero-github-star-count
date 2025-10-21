@@ -239,7 +239,7 @@ $__ghstar.app = {
     useSearchTitleFuzzyMatch: false,
     useSearchAuthorsMatch: true,
     useDateRangeMatch: false,
-    defaultGsApiEndpoint: 'https://api.github.com',
+    defaultGithubApiEndpoint: 'https://api.github.com',
   },
   /**
    * Initialize our world.
@@ -718,8 +718,8 @@ $__ghstar.app = {
     try {
       apiEndpoint = new URL(
         Zotero.Prefs.get(
-          'extensions.zotero.ghstar.defaultGsApiEndpoint',
-          $__ghstar.app.__preferenceDefaults.defaultGsApiEndpoint,
+          'extensions.zotero.ghstar.defaultGithubApiEndpoint',
+          $__ghstar.app.__preferenceDefaults.defaultGithubApiEndpoint,
         ),
       );
     } catch {

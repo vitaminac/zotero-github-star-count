@@ -6,6 +6,6 @@ pref('extensions.zotero.ghstar.useSearchTitleFuzzyMatch', false);
 pref('extensions.zotero.ghstar.useSearchAuthorsMatch', true);
 pref('extensions.zotero.ghstar.useDateRangeMatch', false);
 pref(
-  'extensions.zotero.ghstar.defaultGsApiEndpoint',
+  'extensions.zotero.ghstar.defaultGithubApiEndpoint',
   'https://api.github.com',
 );

@@ -1,8 +1,9 @@
 #!/bin/sh
 
-# set the version for our file
-# requires NPM 7.20+
+# set the version for our plugin
 version=$(npm pkg get version | tr -d '"')
+min_zotero_version="6.999"
+max_zotero_version="7.0.*"
 
 rm -rf build
 mkdir -p build
@@ -16,6 +17,10 @@ cd ..
 # patch plugin version
 sed -i -E "s/\"version\": *\"[^\"]+\"/\"version\": \"${version}\"/" updates.json
 sed -i -E "s/\"version\": *\"[^\"]+\"/\"version\": \"${version}\"/" src/manifest.json
+sed -i -E "s/\"strict_min_version\": *\"[^\"]+\"/\"strict_min_version\": \"${min_zotero_version}\"/" updates.json
+sed -i -E "s/\"strict_min_version\": *\"[^\"]+\"/\"strict_min_version\": \"${min_zotero_version}\"/" src/manifest.json
+sed -i -E "s/\"strict_max_version\": *\"[^\"]+\"/\"strict_max_version\": \"${max_zotero_version}\"/" updates.json
+sed -i -E "s/\"strict_max_version\": *\"[^\"]+\"/\"strict_max_version\": \"${max_zotero_version}\"/" src/manifest.json
 
 # patch update link
 updatelink="https://github.com/vitaminac/zotero-github-star-count/releases/download/v${version}/zotero-github-star-count-${version}.xpi"

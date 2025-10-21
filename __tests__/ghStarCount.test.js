@@ -16,7 +16,7 @@ describe('Verify $__ghstar.app sanity', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.useFakeTimers('modern');
-    jest.setSystemTime(new Date(2024, 12, 1));
+    jest.setSystemTime(new Date("2025-01-01T00:00:00Z"));
   });
 
   it('init() should set app', () => {
@@ -36,7 +36,7 @@ describe('Verify $__ghstar.app sanity', () => {
   it('buildcitecountstring() string + count', () => {
     const count = base.$__ghstar.app.getStarCount(hasStarCount.data);
     const test = base.$__ghstar.app.buildCiteCountString(count);
-    expect(test).toEqual('GHSTAR: 0001028 2024-12-31T23:00:00.000Z 0');
+    expect(test).toEqual('GHSTAR: 0001028 2025-01-01T00:00:00.000Z 0');
   });
 
   it('generateItemUrl() should output string', async () => {
@@ -65,7 +65,7 @@ describe('Verify $__ghstar.app sanity', () => {
     expect(extra).toHaveBeenCalled();
     expect(tx).toHaveBeenCalled();
     expect(item.getField('extra')).toEqual(
-      'GHSTAR: 0000400 2024-12-31T23:00:00.000Z 0.22 \nPublisher: SAGE Publications Inc',
+      'GHSTAR: 0000400 2025-01-01T00:00:00.000Z 0 \nbla bla bla',
     );
   });
 
@@ -77,7 +77,7 @@ describe('Verify $__ghstar.app sanity', () => {
     expect(extra).toHaveBeenCalled();
     expect(tx).toHaveBeenCalled();
     expect(item.getField('extra')).toEqual(
-      'GHSTAR: 0001000 2024-12-31T23:00:00.000Z 0.54 \nPublisher: SAGE Publications Inc',
+      'GHSTAR: 0001000 2025-01-01T00:00:00.000Z 0 \nbla bla bla',
     );
   });
 
@@ -89,7 +89,7 @@ describe('Verify $__ghstar.app sanity', () => {
     expect(extra).toHaveBeenCalled();
     expect(tx).toHaveBeenCalled();
     expect(item.getField('extra')).toEqual(
-      'GHSTAR: 0000010 2024-12-31T23:00:00.000Z 0.01 \n',
+      'GHSTAR: 0000010 2025-01-01T00:00:00.000Z 0 \n',
     );
   });
 
@@ -119,7 +119,7 @@ describe('Verify $__ghstar.app sanity', () => {
       },
     );
     expect(item.getField('extra')).toEqual(
-      'GHSTAR: 0001028 2024-12-31T23:00:00.000Z 0.56 \n',
+      'GHSTAR: 0001028 2025-01-01T00:00:00.000Z 0 \n',
     );
   });
 
@@ -171,13 +171,13 @@ describe('Verify $__ghstar.app sanity', () => {
     expect(citeCount).toBe(1000);
 
     const lastUpdated = base.$__ghstar.app.setColumnData(item, 'lastUpdated');
-    expect(lastUpdated).toBe('1/1/2025, 12:00:00 AM');
+    expect(lastUpdated).toBe('1/1/2025, 1:00:00 AM');
 
     const relevanceScore = base.$__ghstar.app.setColumnData(
       item,
       'relevanceScore',
     );
-    expect(relevanceScore).toBe(0.54);
+    expect(relevanceScore).toBe(0);
   });
 
   it('extra Field Extractor tests', () => {

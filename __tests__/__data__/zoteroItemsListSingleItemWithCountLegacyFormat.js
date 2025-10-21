@@ -11,7 +11,7 @@ const data = helpers.createItem({
   date: 'September 1, 1989',
   url: 'https://github.com/vitaminac/zotero-github-star-count',
   accessDate: '2021-09-22',
-  extra: 'GHSTAR: 0000505 \nPublisher: SAGE Publications Inc',
+  extra: 'GHSTAR: 0000505 \nbla bla bla',
   volume: '49',
   pages: '509-527',
   publicationTitle: 'Educational and Psychological Measurement',

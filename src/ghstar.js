@@ -740,12 +740,8 @@ $__ghstar.app = {
         this.__citeCountStrLength,
       );
     }
-    const getRelevanceScore = this.calculateRelativeRelevance(
-      publicationDate,
-      citeCount,
-    );
 
-    return `${this.__extraEntryPrefix}: ${data} ${new Date().toISOString()} ${getRelevanceScore}`;
+    return `${this.__extraEntryPrefix}: ${data} ${new Date().toISOString()} 0`;
   },
   /**
    * Parse the raw response for citation count

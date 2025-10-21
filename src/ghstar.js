@@ -742,9 +742,9 @@ $__ghstar.app = {
     const apiEndpoint = await $__ghstar.app.getApiEndpoint();
 
     // get URL field
-    const sanitizedUrl = item.getField('url') || '';
+    const targetUrl = item.getField('url') || '';
 
-    sanitizedUrl.replace(/^https:\/\/github.com\//, `${apiEndpoint.href}/repos/`)
+    targetUrl.replace(/^https:\/\/github.com\//, `${apiEndpoint.href}/repos/`)
     $__ghstar.debugger.info(`Search Endpoint Ready: ${targetUrl}`);
 
     return encodeURI(targetUrl);

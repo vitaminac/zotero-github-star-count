@@ -2,12 +2,12 @@
   "name": "zotero-google-scholar-citation-count",
   "version": "4.3.0",
   "bugs": {
-    "url": "https://github.com/justinribeiro/zotero-google-scholar-citation-count/issues"
+    "url": "https://github.com/vitaminac/zotero-github-star-count/issues"
   },
   "license": "MPLv2",
   "repository": {
     "type": "git",
-    "url": "git@github.com:justinribeiro/zotero-google-scholar-citation-count.git"
+    "url": "git@github.com:vitaminac/zotero-github-star-count.git"
   },
   "contributors": [
     {

@@ -14,9 +14,9 @@ cd ..
 jq --arg version "$version" '.addons."dalao1002@gmail.com".updates.[0].version |= "\($version)"' updates.json | sponge updates.json
 
 # patch the update link
-updatelink="https://github.com/vitaminac/zotero-github-star-count/releases/download/v${version}/zotero-google-scholar-citation-count-${version}.xpi"
+updatelink="https://github.com/vitaminac/zotero-github-star-count/releases/download/v${version}/zotero-github-star-count-${version}.xpi"
 jq --arg updatelink "$updatelink" '.addons."dalao1002@gmail.com".updates.[0].update_link |= "\($updatelink)"' updates.json | sponge updates.json
 
 # patch the hash for the XPI
-hash=$(sh -c 'sha256sum < "$1" | cut -d" " -f1' -- ./build/zotero-google-scholar-citation-count-${version}.xpi)
+hash=$(sh -c 'sha256sum < "$1" | cut -d" " -f1' -- ./build/zotero-github-star-count-${version}.xpi)
 jq --arg hash "$hash" '.addons."dalao1002@gmail.com".updates.[0].update_hash |= "sha256:\($hash)"' updates.json | sponge updates.json

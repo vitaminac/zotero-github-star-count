@@ -434,7 +434,7 @@ $__ghstar.app = {
    * @return {boolean}
    */
   hasRequiredFields: function (item) {
-    return item.itemType === "computerProgram" && item.getField("url") && item.getField("url").startsWith("https://github.com/");
+    return (item.getField("url") || false) && item.getField("url").startsWith("https://github.com/");
   },
   updateCollectionMenuEntry: async function () {
     const zoteroPane = $__ghstar.app.getActivePane();
@@ -539,11 +539,7 @@ $__ghstar.app = {
      */
     for (const [index, item] of items.entries()) {
       if (!this.hasRequiredFields(item)) {
-        $__ghstar.debugger.warn(
-          `skipping item '${item.getField(
-            'title',
-          )}': empty URL or non Github software'`,
-        );
+        this.openWarningWindow(item.getField("title"));
       } else {
         // check the prefs in case user override, don't use it on the first item
         // either way
@@ -627,6 +623,26 @@ $__ghstar.app = {
 
     progressPopUp.changeHeadline(headlineLabel);
     progressPopUp.addDescription(`${descriptionLabel}: ${count}, "${title}"`);
+    progressPopUp.show();
+    progressPopUp.startCloseTimer();
+  },
+
+  /**
+   * Show the progress window pop-up for incorrect item
+   * @param {string} title ZoteroItem title
+   */
+  openWarningWindow: async function (title) {
+    const window = Zotero.getMainWindow();
+    const progressPopUp = this.getProgressWindow();
+    const headlineLabel = await window.document.l10n.formatValue(
+      'ghstar-warning-window-title',
+    );
+    const descriptionLabel = await window.document.l10n.formatValue(
+      'ghstar-warning-window-desc',
+    );
+
+    progressPopUp.changeHeadline(headlineLabel);
+    progressPopUp.addDescription(`${descriptionLabel} "${title}"`);
     progressPopUp.show();
     progressPopUp.startCloseTimer();
   },

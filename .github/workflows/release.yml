@@ -30,8 +30,8 @@ jobs:
         run: npm ci
 
       - name: Build
-        # package script invokes build.sh which prepares build/*.xpi and updates updates.json
-        run: npm run package
+        # invokes release.sh which generate build/*.xpi and updates updates.json
+        run: npm run release
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2

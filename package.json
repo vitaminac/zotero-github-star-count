@@ -1,6 +1,6 @@
 {
   "name": "zotero-github-star-count",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "bugs": {
     "url": "https://github.com/vitaminac/zotero-github-star-count/issues"
   },
@@ -10,11 +10,10 @@
     "url": "git@github.com:vitaminac/zotero-github-star-count.git"
   },
   "scripts": {
-    "prepackage": "npm test",
-    "package": "npm run clean && bash -c ./build.sh",
-    "clean": "rm -rf coverage build",
     "test": "jest",
-    "make-badges": "istanbul-badges-readme"
+    "clean": "rm -rf coverage build",
+    "prerelease": "npm test",
+    "release": "npm run clean && bash -c ./release.sh"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",

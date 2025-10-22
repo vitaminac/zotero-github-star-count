@@ -13,3 +13,5 @@ ghstar-unSupportedGroupCollection =
 ghstar-invalidGoogleScholarURL = The Github API URL appears malformed; please check "Settings > Github stars count" to verify your Github API URL.
 ghstar-progresswindow-title = Github Star Count Updated
 ghstar-progresswindow-desc = Citation Total
+ghstar-warning-window-title = Github Star Count Update Failed
+ghstar-warning-window-desc = URL is empty or URL is not a Github repo for

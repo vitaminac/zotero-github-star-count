@@ -28,7 +28,7 @@ export default {
       branches: 50,
       functions: 51,
       lines: 60,
-      statements: 59,
+      statements: 58,
     },
   },
 

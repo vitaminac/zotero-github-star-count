@@ -648,7 +648,7 @@ $__ghstar.app = {
   },
 
   /**
-   * Retrieve the Github stars count for a given Zotero item record
+   * Retrieve the Github Star count for a given Zotero item record
    * @param {ZoteroGenericItem} item Used to generate the fetch() string
    * @param {function} callback callback on complete
    */

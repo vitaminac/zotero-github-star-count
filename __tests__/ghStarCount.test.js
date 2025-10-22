@@ -32,10 +32,12 @@ describe('Verify $__ghstar.app sanity', () => {
     expect(test).toBe(1028);
   });
 
-  it('buildcitecountstring() string + count', () => {
-    const count = base.$__ghstar.app.getStarCount(hasStarCount.data);
-    const test = base.$__ghstar.app.buildCiteCountString(count);
-    expect(test).toEqual('GHSTAR: 0001028 2025-01-01T00:00:00.000Z 0');
+  describe("when buildcitecountstring()", () => {
+    it("should format string with star count and Github repository URL", () => {
+      const count = base.$__ghstar.app.getStarCount(hasStarCount.data);
+      const test = base.$__ghstar.app.buildCiteCountString(count, singleItemWithCount.data);
+      expect(test).toEqual('GHSTAR: 0001028 2025-01-01T00:00:00.000Z https://github.com/vitaminac/zotero-github-star-count');
+    });
   });
 
   it('generateItemUrl() should output string', async () => {
@@ -64,7 +66,7 @@ describe('Verify $__ghstar.app sanity', () => {
     expect(extra).toHaveBeenCalled();
     expect(tx).toHaveBeenCalled();
     expect(item.getField('extra')).toEqual(
-      'GHSTAR: 0000400 2025-01-01T00:00:00.000Z 0 \nbla bla bla',
+      'GHSTAR: 0000400 2025-01-01T00:00:00.000Z https://github.com/vitaminac/zotero-github-star-count \nbla bla bla',
     );
   });
 
@@ -76,7 +78,7 @@ describe('Verify $__ghstar.app sanity', () => {
     expect(extra).toHaveBeenCalled();
     expect(tx).toHaveBeenCalled();
     expect(item.getField('extra')).toEqual(
-      'GHSTAR: 0001000 2025-01-01T00:00:00.000Z 0 \nbla bla bla',
+      'GHSTAR: 0001000 2025-01-01T00:00:00.000Z https://github.com/vitaminac/zotero-github-star-count \nbla bla bla',
     );
   });
 
@@ -88,20 +90,20 @@ describe('Verify $__ghstar.app sanity', () => {
     expect(extra).toHaveBeenCalled();
     expect(tx).toHaveBeenCalled();
     expect(item.getField('extra')).toEqual(
-      'GHSTAR: 0000010 2025-01-01T00:00:00.000Z 0 \n',
+      'GHSTAR: 0000010 2025-01-01T00:00:00.000Z https://github.com/vitaminac/zotero-github-star-count \n',
     );
   });
 
-  it('hasRequiredFields() should return true for software', () => {
+  it('getGithubRepoUrl() should return Github URL for software item', () => {
     const item = singleItemSoftware.data;
-    const test = base.$__ghstar.app.hasRequiredFields(item);
-    expect(test).toBe(true);
+    const test = base.$__ghstar.app.getGithubRepoUrl(item);
+    expect(test).toBe("https://github.com/vitaminac/zotero-github-star-count");
   });
 
-  it('hasRequiredFields() should return false for non-software', () => {
+  it('getGithubRepoUrl() should return empty string for non software item', () => {
     const item = singleItemNonSoftware.data;
-    const test = base.$__ghstar.app.hasRequiredFields(item);
-    expect(test).toBe(false);
+    const test = base.$__ghstar.app.getGithubRepoUrl(item);
+    expect(test).toBe("");
   });
 
   it('processGithubStarResponse() 200 should set item data', () => {
@@ -118,7 +120,7 @@ describe('Verify $__ghstar.app sanity', () => {
       },
     );
     expect(item.getField('extra')).toEqual(
-      'GHSTAR: 0001028 2025-01-01T00:00:00.000Z 0 \n',
+      'GHSTAR: 0001028 2025-01-01T00:00:00.000Z https://github.com/vitaminac/zotero-github-star-count \n',
     );
   });
 

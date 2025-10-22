@@ -429,12 +429,15 @@ $__ghstar.app = {
     }
   },
   /**
-   * Verify is the Zotero item record is Github repo
+   * Get Github repository URL from a Zotero item record
    * @param {ZoteroGenericItem} item
-   * @return {boolean}
+   * @return {string}
    */
-  hasRequiredFields: function (item) {
-    return (item.getField("url") || false) && item.getField("url").startsWith("https://github.com/");
+  getGithubRepoUrl: function (item) {
+    if ((item.getField("url") || false) && item.getField("url").startsWith("https://github.com/")) {
+      return item.getField("url");
+    }
+    return "";
   },
   updateCollectionMenuEntry: async function () {
     const zoteroPane = $__ghstar.app.getActivePane();
@@ -538,30 +541,31 @@ $__ghstar.app = {
      * @param {ZoteroGenericItem} item
      */
     for (const [index, item] of items.entries()) {
-      if (!this.hasRequiredFields(item)) {
+      if (!this.getGithubRepoUrl(item)) {
         this.openWarningWindow(item.getField("title"));
-      } else {
-        // check the prefs in case user override, don't use it on the first item
-        // either way
-        if (useQueue && index > 0) {
-          const queueTime = $__ghstar.util.randomInteger(
-            queueMinWaitMs,
-            queueMaxWaitMs,
-          );
-
-          $__ghstar.debugger.info(`queued for ${queueTime} ms later.`);
-          await $__ghstar.util.sleep(queueTime);
-        }
-
-        const response = await this.retrieveGithubStarCountData(item);
-        await this.processGithubStarResponse(
-          response.status,
-          response.responseText,
-          1000,
-          response.responseURL,
-          item,
-        );
+        continue;
       }
+
+      // check the prefs in case user override, don't use it on the first item
+      // either way
+      if (useQueue && index > 0) {
+        const queueTime = $__ghstar.util.randomInteger(
+          queueMinWaitMs,
+          queueMaxWaitMs,
+        );
+
+        $__ghstar.debugger.info(`queued for ${queueTime} ms later.`);
+        await $__ghstar.util.sleep(queueTime);
+      }
+
+      const response = await this.retrieveGithubStarCountData(item);
+      await this.processGithubStarResponse(
+        response.status,
+        response.responseText,
+        1000,
+        response.responseURL,
+        item,
+      );
     }
   },
   /**
@@ -571,11 +575,7 @@ $__ghstar.app = {
    */
   updateItem: function (item, citeCount) {
     const fieldExtra = item.getField('extra');
-    const fieldPublicationDate = item.getField('date');
-    const buildNewCiteCount = this.buildCiteCountString(
-      citeCount,
-      fieldPublicationDate,
-    );
+    const buildNewCiteCount = this.buildCiteCountString(citeCount, item);
     let revisedExtraField;
 
     if (fieldExtra.startsWith(this.__extraEntryPrefix)) {
@@ -673,7 +673,6 @@ $__ghstar.app = {
     item,
   ) {
     $__ghstar.debugger.info(`Request Status: ${requestStatus}`);
-    let retryResponse;
     switch (requestStatus) {
       case 200:
         $__ghstar.debugger.info(
@@ -721,9 +720,9 @@ $__ghstar.app = {
     const apiEndpoint = await $__ghstar.app.getApiEndpoint();
 
     // get URL field
-    const url = item.getField('url') || '';
+    const githubRepoUrl = this.getGithubRepoUrl(item);
 
-    const targetUrl = url.replace(/^https:\/\/github.com\//, `${apiEndpoint.href}repos/`);
+    const targetUrl = githubRepoUrl.replace(/^https:\/\/github.com\//, `${apiEndpoint.href}repos/`);
     $__ghstar.debugger.info(`Github API Endpoint Ready: ${targetUrl}`);
 
     return encodeURI(targetUrl);
@@ -731,9 +730,10 @@ $__ghstar.app = {
   /**
    * Create the citation string for use on the item record
    * @param {number} citeCount
+   * @param {ZoteroGenericItem} item
    * @returns string
    */
-  buildCiteCountString: function (citeCount, publicationDate) {
+  buildCiteCountString: function (citeCount, item) {
     let data;
     if (citeCount < 0) {
       data = this.__noData;
@@ -744,7 +744,7 @@ $__ghstar.app = {
       );
     }
 
-    return `${this.__extraEntryPrefix}: ${data} ${new Date().toISOString()} 0`;
+    return `${this.__extraEntryPrefix}: ${data} ${new Date().toISOString()} ${this.getGithubRepoUrl(item)}`;
   },
   /**
    * Parse the raw response for citation count

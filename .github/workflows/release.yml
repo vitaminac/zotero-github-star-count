@@ -31,7 +31,9 @@ jobs:
 
       - name: Build
         # invokes release.sh which generate build/*.xpi and updates updates.json
-        run: npm run release
+        run: |
+          chmod +x release.sh
+          npm run release
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2

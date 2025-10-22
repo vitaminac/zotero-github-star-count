@@ -5,7 +5,7 @@
         {
           "version": "1.0.4",
           "update_link": "https://github.com/vitaminac/zotero-github-star-count/releases/download/v1.0.4/zotero-github-star-count-1.0.4.xpi",
-          "update_hash": "sha256:fbd3c06e00385214289ce75012e00c1644eaef080c8834f575882fc2a3ceb4ea",
+          "update_hash": "sha256:d6cc7bbf9b53174cc575dbc9704443ede40af2cd169eec1b6c36449936a48b2c",
           "applications": {
             "zotero": {
               "strict_min_version": "6.999",

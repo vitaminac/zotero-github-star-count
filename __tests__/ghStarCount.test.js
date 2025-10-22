@@ -3,7 +3,6 @@ const hasStarCount = require('./__data__/ghResponseHasStarCount.js');
 const singleItemWithCount = require('./__data__/zoteroItemsListSingleItemWithCount.js');
 const singleItemWithCountLegacyFormat = require('./__data__/zoteroItemsListSingleItemWithCountLegacyFormat.js');
 const singleItemNoCount = require('./__data__/zoteroItemsListSingleItemWithNoCount.js');
-const singleItemHtmlTitle = require('./__data__/zoteroItemsListSingleItemWithHtmlTitle.js');
 const singleItemSoftware = require('./__data__/zoteroItemsListSingleItemSoftware.js');
 const singleItemNonSoftware = require('./__data__/zoteroItemsListSingleItemNonSoftware.js');
 const itemsList = require('./__data__/zoteroItemsList.js');
@@ -35,23 +34,14 @@ describe('Verify $__ghstar.app sanity', () => {
   describe("when buildGhStarCountExtraInfoLine()", () => {
     it("should format string with star count and Github repository URL", () => {
       const count = base.$__ghstar.app.getStarCount(hasStarCount.data);
-      const test = base.$__ghstar.app.buildGhStarCountExtraInfoLine(count, singleItemWithCount.data);
+      const test = base.$__ghstar.app.buildGhStarCountExtraInfoLine(count, singleItemWithCount.data.url);
       expect(test).toEqual('GHSTAR: 0001028 2025-01-01T00:00:00.000Z https://github.com/vitaminac/zotero-github-star-count');
     });
   });
 
   it('generateItemUrl() should output string', async () => {
     const string = await base.$__ghstar.app.generateItemUrl(
-      singleItemNoCount.data,
-    );
-    expect(string).toEqual(
-      'https://api.github.com/repos/vitaminac/zotero-github-star-count',
-    );
-  });
-
-  it('generateItemUrl() should handle HTML in title', async () => {
-    const string = await base.$__ghstar.app.generateItemUrl(
-      singleItemHtmlTitle.data,
+      singleItemNoCount.data.url,
     );
     expect(string).toEqual(
       'https://api.github.com/repos/vitaminac/zotero-github-star-count',
@@ -62,7 +52,7 @@ describe('Verify $__ghstar.app sanity', () => {
     const item = singleItemWithCountLegacyFormat.data;
     const extra = jest.spyOn(item, 'setField');
     const tx = jest.spyOn(item, 'saveTx');
-    base.$__ghstar.app.updateItem(item, 400);
+    base.$__ghstar.app.updateItem(item, 400, item.url);
     expect(extra).toHaveBeenCalled();
     expect(tx).toHaveBeenCalled();
     expect(item.getField('extra')).toEqual(
@@ -74,7 +64,7 @@ describe('Verify $__ghstar.app sanity', () => {
     const item = singleItemWithCount.data;
     const extra = jest.spyOn(item, 'setField');
     const tx = jest.spyOn(item, 'saveTx');
-    base.$__ghstar.app.updateItem(item, 1000);
+    base.$__ghstar.app.updateItem(item, 1000, singleItemWithCount.data.url);
     expect(extra).toHaveBeenCalled();
     expect(tx).toHaveBeenCalled();
     expect(item.getField('extra')).toEqual(
@@ -86,7 +76,7 @@ describe('Verify $__ghstar.app sanity', () => {
     const item = { ...singleItemNoCount.data };
     const extra = jest.spyOn(item, 'setField');
     const tx = jest.spyOn(item, 'saveTx');
-    base.$__ghstar.app.updateItem(item, 10);
+    base.$__ghstar.app.updateItem(item, 10, singleItemNoCount.data.url);
     expect(extra).toHaveBeenCalled();
     expect(tx).toHaveBeenCalled();
     expect(item.getField('extra')).toEqual(
@@ -94,29 +84,29 @@ describe('Verify $__ghstar.app sanity', () => {
     );
   });
 
-  it('getGithubRepoUrl() should return Github URL for software item', () => {
+  it('getExistingGithubRepoUrl() should return Github URL for software item', () => {
     const item = singleItemSoftware.data;
-    const test = base.$__ghstar.app.getGithubRepoUrl(item);
+    const test = base.$__ghstar.app.getExistingGithubRepoUrl(item);
     expect(test).toBe("https://github.com/vitaminac/zotero-github-star-count");
   });
 
-  it('getGithubRepoUrl() should return empty string for non software item', () => {
+  it('getExistingGithubRepoUrl() should return empty string for non software item', () => {
     const item = singleItemNonSoftware.data;
-    const test = base.$__ghstar.app.getGithubRepoUrl(item);
+    const test = base.$__ghstar.app.getExistingGithubRepoUrl(item);
     expect(test).toBe("");
   });
 
   it('processGithubStarResponse() 200 should set item data', () => {
-    const item = { ...singleItemNoCount.data };
-    const targetUrl = base.$__ghstar.app.generateItemUrl(singleItemNoCount.data);
+    const item = { ...singleItemSoftware.data };
+    const targetUrl = base.$__ghstar.app.generateItemUrl(item.url);
     base.$__ghstar.app.processGithubStarResponse(
       200,
       hasStarCount.data,
-      null,
+      item.url,
       targetUrl,
       item,
       (item, citeCount) => {
-        base.$__ghstar.app.updateItem(item, citeCount);
+        base.$__ghstar.app.updateItem(item, citeCount, item.url);
       },
     );
     expect(item.getField('extra')).toEqual(

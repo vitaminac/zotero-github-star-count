@@ -127,36 +127,14 @@ $__ghstar.util = {
     return string.padStart(length, '0');
   },
   /**
-   * Open a user interactive window, holds the window reference, and waits to
-   * complete the recaptcha check before resolving promise
-   * @param {string} targetUrl The url which caused the recaptcha
+   * Prompt user to introduce the Github repository URL
+   * @param {ZoteroGenericItem} item
    * @return {Promise}
    */
-  openRecaptchaWindow: async function (targetUrl) {
+  askForGithubRepoUrl: function (item) {
     const window = Zotero.getMainWindow();
 
-    const alertMessage = await window.document.l10n.formatValue(
-      'ghstar-recapatcha-alert',
-    );
-    window.alert(alertMessage);
-
-    let intervalWindowCloseState;
-
-    const checkWindowClosed = (modalWindowHandle, resolve) => {
-      if (modalWindowHandle?.closed) {
-        $__ghstar.debugger.info('recaptcha window closed');
-        clearInterval(intervalWindowCloseState);
-        resolve();
-      } else {
-        $__ghstar.debugger.info(`waiting for recaptcha user complete...`);
-      }
-    };
-
-    const recaptchaWindow = Zotero.openInViewer(targetUrl);
-
-    return new Promise((resolve) =>
-      checkWindowClosed(recaptchaWindow, resolve),
-    );
+    return window.prompt(`Enter Github repository URL for "${item.getField('title')}":`, "");
   },
 };
 
@@ -441,7 +419,7 @@ $__ghstar.app = {
    * @param {ZoteroGenericItem} item
    * @return {string}
    */
-  getGithubRepoUrl: function (item) {
+  getExistingGithubRepoUrl: function (item) {
     const itemUrl = item.getField("url") || "";
     if (itemUrl && itemUrl.startsWith("https://github.com/")) {
       return itemUrl;
@@ -501,7 +479,7 @@ $__ghstar.app = {
     const zoteroPane = $__ghstar.app.getActivePane();
     const items = zoteroPane.getSelectedItems();
     for (const [index, item] of items.entries()) {
-      const githubRepoUrl = this.getGithubRepoUrl(item);
+      const githubRepoUrl = this.getExistingGithubRepoUrl(item);
       if (githubRepoUrl) {
         Zotero.launchURL(githubRepoUrl);
       }
@@ -565,7 +543,12 @@ $__ghstar.app = {
      * @param {ZoteroGenericItem} item
      */
     for (const [index, item] of items.entries()) {
-      if (!this.getGithubRepoUrl(item)) {
+      let githubRepoUrl = this.getExistingGithubRepoUrl(item);
+      if (!githubRepoUrl) {
+        githubRepoUrl = $__ghstar.util.askForGithubRepoUrl(item);
+      }
+
+      if (!githubRepoUrl) {
         this.openWarningWindow(item.getField("title"));
         continue;
       }
@@ -582,11 +565,11 @@ $__ghstar.app = {
         await $__ghstar.util.sleep(queueTime);
       }
 
-      const response = await this.retrieveGithubStarCountData(item);
+      const response = await this.retrieveGithubStarCountData(githubRepoUrl);
       await this.processGithubStarResponse(
         response.status,
         response.responseText,
-        1000,
+        githubRepoUrl,
         response.responseURL,
         item,
       );
@@ -596,10 +579,11 @@ $__ghstar.app = {
    * update a record with the citation data
    * @param {ZoteroGenericItem} item
    * @param {number} citeCount
+   * @param {string} Github repository URL
    */
-  updateItem: function (item, citeCount) {
+  updateItem: function (item, citeCount, githubRepoUrl) {
     const fieldExtra = item.getField('extra');
-    const newStarCountInfoLine = this.buildGhStarCountExtraInfoLine(citeCount, item);
+    const newStarCountInfoLine = this.buildGhStarCountExtraInfoLine(citeCount, githubRepoUrl);
     let revisedExtraField;
 
     if (fieldExtra.startsWith(this.__extraEntryPrefix)) {
@@ -672,19 +656,19 @@ $__ghstar.app = {
   },
 
   /**
-   * Retrieve the Github Star count for a given Zotero item record
-   * @param {ZoteroGenericItem} item Used to generate the fetch() string
+   * Retrieve the Github Star count for a given Github repository URL
+   * @param {string} Github repository URL
    * @param {function} callback callback on complete
    */
-  retrieveGithubStarCountData: async function (item) {
-    const targetUrl = await this.generateItemUrl(item);
+  retrieveGithubStarCountData: async function (githubRepoUrl) {
+    const targetUrl = await this.generateItemUrl(githubRepoUrl);
     return $__ghstar.util.request({ method: 'GET', url: targetUrl });
   },
   /**
    * process the fetch request for information
    * @param {number} requestStatus the http response from the XHR
    * @param {string} requestData  the http response string from the XHR
-   * @param {string} requestRetry the http retry header, if available
+   * @param {string} Github repository URL
    * @param {string} targetUrl which url did we request
    * @param {ZoteroGenericItem} item the item we're looking up
    * @param {function} callback the updateItem callback.
@@ -692,7 +676,7 @@ $__ghstar.app = {
   processGithubStarResponse: async function (
     requestStatus,
     requestData,
-    requestRetry,
+    githubRepoUrl,
     targetUrl,
     item,
   ) {
@@ -702,7 +686,7 @@ $__ghstar.app = {
         $__ghstar.debugger.info(
           "Github API returned result, parsing star count",
         );
-        this.updateItem(item, this.getStarCount(requestData));
+        this.updateItem(item, this.getStarCount(requestData), githubRepoUrl);
         break;
       default:
         $__ghstar.debugger.error(
@@ -737,14 +721,11 @@ $__ghstar.app = {
 
   /**
    * Generate a Github API URL to use to fetch data
-   * @param {ZoteroGenericItem} item
+   * @param {string} Github repository URL
    * @returns string
    */
-  generateItemUrl: async function (item) {
+  generateItemUrl: async function (githubRepoUrl) {
     const apiEndpoint = await $__ghstar.app.getApiEndpoint();
-
-    // get URL field
-    const githubRepoUrl = this.getGithubRepoUrl(item);
 
     const targetUrl = githubRepoUrl.replace(/^https:\/\/github.com\//, `${apiEndpoint.href}repos/`);
     $__ghstar.debugger.info(`Github API Endpoint Ready: ${targetUrl}`);
@@ -754,16 +735,16 @@ $__ghstar.app = {
   /**
    * Create the citation string for use on the item record
    * @param {number} citeCount
-   * @param {ZoteroGenericItem} item
+   * @param {string} Github repository URL
    * @returns string
    */
-  buildGhStarCountExtraInfoLine: function (citeCount, item) {
+  buildGhStarCountExtraInfoLine: function (citeCount, githubRepoUrl) {
     const ghStarCountString = $__ghstar.util.padCountWithZeros(
       Math.max(citeCount, 0).toString(),
       this.__citeCountStrLength,
     );
 
-    return `${this.__extraEntryPrefix}: ${ghStarCountString} ${new Date().toISOString()} ${this.getGithubRepoUrl(item)}`;
+    return `${this.__extraEntryPrefix}: ${ghStarCountString} ${new Date().toISOString()} ${githubRepoUrl}`;
   },
   /**
    * Parse the raw response for citation count

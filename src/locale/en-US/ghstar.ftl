@@ -1,5 +1,7 @@
-ghstar-menuitem =
+ghstar-menuitem-update =
   .label = Update Github Star Count
+ghstar-menuitem-open =
+  .label = Open Github repository
 ghstar-column-name = Github Star Count
 ghstar-ghStarLastUpdated-column-name = Github Star Count Last Updated Date
 ghstar-update-all =

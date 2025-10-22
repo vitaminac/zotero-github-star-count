@@ -258,18 +258,31 @@ $__ghstar.app = {
     const XUL_NS =
       'http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul';
 
-    // Add menu option
-    const menuitem = doc.createElementNS(XUL_NS, 'menuitem');
-    menuitem.id = 'ghstar-get-count';
-    menuitem.classList.add(
+    // add menu item to update Github Star Count
+    const menuItemGetCount = doc.createElementNS(XUL_NS, 'menuitem');
+    menuItemGetCount.id = 'ghstar-get-count';
+    menuItemGetCount.classList.add(
       'menuitem-iconic',
       'zotero-menuitem-retrieve-metadata',
     );
-    menuitem.setAttribute('data-l10n-id', 'ghstar-menuitem');
-    menuitem.addEventListener('command', async () => {
+    menuItemGetCount.setAttribute('data-l10n-id', 'ghstar-menuitem-update');
+    menuItemGetCount.addEventListener('command', async () => {
       await $__ghstar.app.updateItemMenuEntries();
     });
-    doc.getElementById('zotero-itemmenu').appendChild(menuitem);
+    doc.getElementById('zotero-itemmenu').appendChild(menuItemGetCount);
+
+    // add menu item to open Github repository
+    const menuItemOpenGithubRepo = doc.createElementNS(XUL_NS, 'menuitem');
+    menuItemOpenGithubRepo.id = 'ghstar-open-repo';
+    menuItemOpenGithubRepo.classList.add(
+      'menuitem-iconic',
+      'zotero-menuitem-view-online',
+    );
+    menuItemOpenGithubRepo.setAttribute('data-l10n-id', 'ghstar-menuitem-open');
+    menuItemOpenGithubRepo.addEventListener('command', async () => {
+      await $__ghstar.app.openGithubRepo();
+    });
+    doc.getElementById('zotero-itemmenu').appendChild(menuItemOpenGithubRepo);
 
     $__ghstar.debugger.info(`Menu Item Option Added to Right Click Menu`);
 
@@ -405,6 +418,7 @@ $__ghstar.app = {
     try {
       // failsafe
       doc.querySelector('#ghstar-get-count').remove();
+      doc.querySelector('#ghstar-open-repo').remove();
       $__ghstar.debugger.info('Running failsafe remove custom column.');
     } catch {}
   },
@@ -482,6 +496,16 @@ $__ghstar.app = {
       return;
     }
     await this.processItems(zoteroPane.getSelectedItems());
+  },
+  openGithubRepo: async function () {
+    const zoteroPane = $__ghstar.app.getActivePane();
+    const items = zoteroPane.getSelectedItems();
+    for (const [index, item] of items.entries()) {
+      const githubRepoUrl = this.getGithubRepoUrl(item);
+      if (githubRepoUrl) {
+        Zotero.launchURL(githubRepoUrl);
+      }
+    }
   },
   updateGroup: async function () {
     const window = Zotero.getMainWindow();

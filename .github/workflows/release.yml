@@ -42,3 +42,25 @@ jobs:
             build/*.xpi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update updates.json
+        run: |
+          git config user.name "vitaminac"
+          git config user.email "dalao1002@gmail.com"
+
+          cp updates.json /tmp/updates.json
+
+          # Switch to main to push changes
+          git fetch origin main
+          git checkout main
+          git pull origin main
+
+          # Commit and push only if there are changes
+          cp /tmp/updates.json ./updates.json
+          if ! git diff --quiet; then
+            git add updates.json
+            git commit -m "Update updates.json for release ${GITHUB_REF_NAME}"
+            git push origin main
+          else
+            echo "No changes to updates.json"
+          fi

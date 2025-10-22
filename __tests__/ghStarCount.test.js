@@ -32,10 +32,10 @@ describe('Verify $__ghstar.app sanity', () => {
     expect(test).toBe(1028);
   });
 
-  describe("when buildcitecountstring()", () => {
+  describe("when buildGhStarCountExtraInfoLine()", () => {
     it("should format string with star count and Github repository URL", () => {
       const count = base.$__ghstar.app.getStarCount(hasStarCount.data);
-      const test = base.$__ghstar.app.buildCiteCountString(count, singleItemWithCount.data);
+      const test = base.$__ghstar.app.buildGhStarCountExtraInfoLine(count, singleItemWithCount.data);
       expect(test).toEqual('GHSTAR: 0001028 2025-01-01T00:00:00.000Z https://github.com/vitaminac/zotero-github-star-count');
     });
   });
@@ -166,19 +166,19 @@ describe('Verify $__ghstar.app sanity', () => {
     expect(alert).toHaveBeenCalledTimes(1);
   });
 
-  it('verify field key lookup in setColumnData', () => {
+  it('verify field key lookup in getGhStarCountExtraInfoLineColumnData', () => {
     const item = singleItemWithCount.data;
-    const citeCount = base.$__ghstar.app.setColumnData(item, 'ghStarCount');
+    const citeCount = base.$__ghstar.app.getGhStarCountExtraInfoLineColumnData(item, 'ghStarCount');
     expect(citeCount).toBe(1000);
 
-    const ghStarLastUpdated = base.$__ghstar.app.setColumnData(item, 'ghStarLastUpdated');
+    const ghStarLastUpdated = base.$__ghstar.app.getGhStarCountExtraInfoLineColumnData(item, 'ghStarLastUpdated');
     expect(ghStarLastUpdated).toBe('1/1/2025, 12:00:00 AM');
 
-    const ghUrl = base.$__ghstar.app.setColumnData(
+    const githubRepoUrl = base.$__ghstar.app.getGhStarCountExtraInfoLineColumnData(
       item,
-      'ghUrl',
+      'githubRepoUrl',
     );
-    expect(ghUrl).toBe("https://github.com/vitaminac/zotero-github-star-count");
+    expect(githubRepoUrl).toBe("https://github.com/vitaminac/zotero-github-star-count");
   });
 
   it('extra Field Extractor tests', () => {

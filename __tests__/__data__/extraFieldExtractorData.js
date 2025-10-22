@@ -4,7 +4,7 @@ const data = [
     expectedResult: {
       ghStarCount: 1001,
       ghStarLastUpdated: '',
-      ghUrl: "",
+      githubRepoUrl: "",
     },
   },
   {
@@ -12,7 +12,7 @@ const data = [
     expectedResult: {
       ghStarCount: 1000,
       ghStarLastUpdated: '',
-      ghUrl: "",
+      githubRepoUrl: "",
     },
   },
 
@@ -21,7 +21,7 @@ const data = [
     expectedResult: {
       ghStarCount: 0,
       ghStarLastUpdated: '',
-      ghUrl: "",
+      githubRepoUrl: "",
     },
   },
   {
@@ -29,7 +29,7 @@ const data = [
     expectedResult: {
       ghStarCount: 10,
       ghStarLastUpdated: '1/1/2025, 12:00:00 AM',
-      ghUrl: "",
+      githubRepoUrl: "",
     },
   },
   {
@@ -38,7 +38,7 @@ const data = [
     expectedResult: {
       ghStarCount: 400,
       ghStarLastUpdated: '1/1/2025, 12:00:00 AM',
-      ghUrl: "",
+      githubRepoUrl: "",
     },
   },
   {
@@ -47,7 +47,7 @@ const data = [
     expectedResult: {
       ghStarCount: 401,
       ghStarLastUpdated: '1/1/2025, 12:00:00 AM',
-      ghUrl: "",
+      githubRepoUrl: "",
     },
   },
   {
@@ -56,7 +56,7 @@ const data = [
     expectedResult: {
       ghStarCount: 401,
       ghStarLastUpdated: '1/1/2025, 12:00:00 AM',
-      ghUrl: "https://github.com/vitaminac/zotero-github-star-count",
+      githubRepoUrl: "https://github.com/vitaminac/zotero-github-star-count",
     },
   },
   {
@@ -65,7 +65,7 @@ const data = [
     expectedResult: {
       ghStarCount: 10401,
       ghStarLastUpdated: '1/1/2025, 12:00:00 AM',
-      ghUrl: "https://github.com/vitaminac/zotero-github-star-count",
+      githubRepoUrl: "https://github.com/vitaminac/zotero-github-star-count",
     },
   },
   {
@@ -74,7 +74,7 @@ const data = [
     expectedResult: {
       ghStarCount: 10433,
       ghStarLastUpdated: '1/1/2025, 12:00:00 AM',
-      ghUrl: "https://github.com/vitaminac/zotero-github-star-count",
+      githubRepoUrl: "https://github.com/vitaminac/zotero-github-star-count",
     },
   },
   {
@@ -83,7 +83,7 @@ const data = [
     expectedResult: {
       ghStarCount: 433,
       ghStarLastUpdated: '1/1/2025, 12:00:00 AM',
-      ghUrl: "https://github.com/vitaminac/zotero-github-star-count",
+      githubRepoUrl: "https://github.com/vitaminac/zotero-github-star-count",
     },
   },
   {
@@ -92,7 +92,7 @@ const data = [
     expectedResult: {
       ghStarCount: 433,
       ghStarLastUpdated: '1/1/2025, 12:00:00 AM',
-      ghUrl: "https://github.com/vitaminac/zotero-github-star-count",
+      githubRepoUrl: "https://github.com/vitaminac/zotero-github-star-count",
     },
   },
   {
@@ -101,7 +101,7 @@ const data = [
     expectedResult: {
       ghStarCount: 433,
       ghStarLastUpdated: '1/1/2025, 12:00:00 AM',
-      ghUrl: "",
+      githubRepoUrl: "",
     },
   },
 ];

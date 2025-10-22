@@ -177,11 +177,6 @@ $__ghstar.app = {
    */
   __extraEntrySeparator: ' \n',
   /**
-   * The string for when citation count is empty
-   * @private
-   */
-  __noData: 'NoCitationData',
-  /**
    * Default String search in Github API,
    * will override based on locale
    * @private
@@ -289,7 +284,7 @@ $__ghstar.app = {
           label: columnLabel,
           pluginID: 'dalao1002@gmail.com',
           dataProvider: (item, dataKey) => {
-            return this.setColumnData(item, 'ghStarCount');
+            return this.getGhStarCountExtraInfoLineColumnData(item, 'ghStarCount');
           },
           zoteroPersist: ['width', 'hidden', 'sortDirection'],
         },
@@ -298,7 +293,7 @@ $__ghstar.app = {
           label: columnLastUpdateLabel,
           pluginID: 'dalao1002@gmail.com',
           dataProvider: (item, dataKey) => {
-            return this.setColumnData(item, 'ghStarLastUpdated');
+            return this.getGhStarCountExtraInfoLineColumnData(item, 'ghStarLastUpdated');
           },
           zoteroPersist: ['width', 'hidden', 'sortDirection'],
         }
@@ -347,7 +342,7 @@ $__ghstar.app = {
    * Set the custom column for the GHStarExtra field key by parsing the extra field
    * @param {String} extraString
    */
-  setColumnData: function (item, field) {
+  getGhStarCountExtraInfoLineColumnData: function (item, field) {
     const extraString = item.getField('extra');
     const data = this.extraFieldExtractor(extraString);
     return data[field];
@@ -358,7 +353,7 @@ $__ghstar.app = {
    * @typedef {Object} GHStarExtra
    * @property {number} ghStarCount - The GS citation count
    * @property {date} lateUpdated - The last time we pulled the data.
-   * @property {number} ghUrl - The relative relevance of the citations
+   * @property {number} githubRepoUrl - The relative relevance of the citations
    */
   /**
    * Break apart all the variants we can think of for other uses
@@ -369,7 +364,7 @@ $__ghstar.app = {
     const parts = {
       ghStarCount: 0,
       ghStarLastUpdated: '',
-      ghUrl: '',
+      githubRepoUrl: '',
     };
     try {
       // Look everywhere but always on a single line
@@ -393,7 +388,7 @@ $__ghstar.app = {
         parts.ghStarLastUpdated = matches[2]
           ? new Date(matches[2]).toLocaleString()
           : parts?.ghStarLastUpdated;
-        parts.ghUrl = (matches[3] && matches[3].startsWith("https://github.com/")) ? matches[3] : parts.ghUrl;
+        parts.githubRepoUrl = (matches[3] && matches[3].startsWith("https://github.com/")) ? matches[3] : parts.githubRepoUrl;
       }
     } catch {
       // dead case for weird behavior
@@ -433,8 +428,14 @@ $__ghstar.app = {
    * @return {string}
    */
   getGithubRepoUrl: function (item) {
-    if ((item.getField("url") || false) && item.getField("url").startsWith("https://github.com/")) {
-      return item.getField("url");
+    const itemUrl = item.getField("url") || "";
+    if (itemUrl && itemUrl.startsWith("https://github.com/")) {
+      return itemUrl;
+    }
+
+    const existingGithubRepoUrl = this.getGhStarCountExtraInfoLineColumnData(item, "githubRepoUrl");
+    if (existingGithubRepoUrl && existingGithubRepoUrl.startsWith("https://github.com/")) {
+      return existingGithubRepoUrl;
     }
     return "";
   },
@@ -574,7 +575,7 @@ $__ghstar.app = {
    */
   updateItem: function (item, citeCount) {
     const fieldExtra = item.getField('extra');
-    const newStarCountInfoLine = this.buildCiteCountString(citeCount, item);
+    const newStarCountInfoLine = this.buildGhStarCountExtraInfoLine(citeCount, item);
     let revisedExtraField;
 
     if (fieldExtra.startsWith(this.__extraEntryPrefix)) {
@@ -732,18 +733,13 @@ $__ghstar.app = {
    * @param {ZoteroGenericItem} item
    * @returns string
    */
-  buildCiteCountString: function (citeCount, item) {
-    let data;
-    if (citeCount < 0) {
-      data = this.__noData;
-    } else {
-      data = $__ghstar.util.padCountWithZeros(
-        citeCount.toString(),
-        this.__citeCountStrLength,
-      );
-    }
+  buildGhStarCountExtraInfoLine: function (citeCount, item) {
+    const ghStarCountString = $__ghstar.util.padCountWithZeros(
+      Math.max(citeCount, 0).toString(),
+      this.__citeCountStrLength,
+    );
 
-    return `${this.__extraEntryPrefix}: ${data} ${new Date().toISOString()} ${this.getGithubRepoUrl(item)}`;
+    return `${this.__extraEntryPrefix}: ${ghStarCountString} ${new Date().toISOString()} ${this.getGithubRepoUrl(item)}`;
   },
   /**
    * Parse the raw response for citation count

@@ -174,11 +174,11 @@ describe('Verify $__ghstar.app sanity', () => {
     const ghStarLastUpdated = base.$__ghstar.app.setColumnData(item, 'ghStarLastUpdated');
     expect(ghStarLastUpdated).toBe('1/1/2025, 12:00:00 AM');
 
-    const relevanceScore = base.$__ghstar.app.setColumnData(
+    const ghUrl = base.$__ghstar.app.setColumnData(
       item,
-      'relevanceScore',
+      'ghUrl',
     );
-    expect(relevanceScore).toBe(0);
+    expect(ghUrl).toBe("https://github.com/vitaminac/zotero-github-star-count");
   });
 
   it('extra Field Extractor tests', () => {

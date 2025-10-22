@@ -358,7 +358,7 @@ $__ghstar.app = {
    * @typedef {Object} GHStarExtra
    * @property {number} ghStarCount - The GS citation count
    * @property {date} lateUpdated - The last time we pulled the data.
-   * @property {number} relevanceScore - The relative relevance of the citations
+   * @property {number} ghUrl - The relative relevance of the citations
    */
   /**
    * Break apart all the variants we can think of for other uses
@@ -369,7 +369,7 @@ $__ghstar.app = {
     const parts = {
       ghStarCount: 0,
       ghStarLastUpdated: '',
-      relevanceScore: 0,
+      ghUrl: '',
     };
     try {
       // Look everywhere but always on a single line
@@ -393,8 +393,7 @@ $__ghstar.app = {
         parts.ghStarLastUpdated = matches[2]
           ? new Date(matches[2]).toLocaleString()
           : parts?.ghStarLastUpdated;
-        parts.relevanceScore =
-          parseFloat(matches[3] ?? parts?.relevanceScore) || 0;
+        parts.ghUrl = (matches[3] && matches[3].startsWith("https://github.com/")) ? matches[3] : parts.ghUrl;
       }
     } catch {
       // dead case for weird behavior
@@ -575,21 +574,21 @@ $__ghstar.app = {
    */
   updateItem: function (item, citeCount) {
     const fieldExtra = item.getField('extra');
-    const buildNewCiteCount = this.buildCiteCountString(citeCount, item);
+    const newStarCountInfoLine = this.buildCiteCountString(citeCount, item);
     let revisedExtraField;
 
     if (fieldExtra.startsWith(this.__extraEntryPrefix)) {
       revisedExtraField = fieldExtra.replace(
         new RegExp(String.raw`${this.__extraEntryPrefix}:(.*)[^ \n]`, 'g'),
-        buildNewCiteCount,
+        newStarCountInfoLine,
       );
       $__ghstar.debugger.info(
-        `existing cite count in extra field, updating to ${buildNewCiteCount} ${revisedExtraField}`,
+        `existing cite count in extra field, updating to ${newStarCountInfoLine} ${revisedExtraField}`,
       );
     } else {
       $__ghstar.debugger.info(`no existing cite count in extra field, adding`);
       revisedExtraField =
-        `${buildNewCiteCount}${this.__extraEntrySeparator}`.concat(
+        `${newStarCountInfoLine}${this.__extraEntrySeparator}`.concat(
           '',
           fieldExtra,
         );

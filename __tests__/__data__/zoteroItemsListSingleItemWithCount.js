@@ -8,7 +8,7 @@ const data = helpers.createItem({
   url: 'https://github.com/vitaminac/zotero-github-star-count',
   accessDate: '2021-09-22',
   extra:
-    'GHSTAR: 0000505 2025-01-01T23:00:00.000Z 0 \nbla bla bla',
+    'GHSTAR: 0000505 2025-01-01T23:00:00.000Z https://github.com/vitaminac/zotero-github-star-count \nbla bla bla',
   creators: [],
   tags: [],
   collections: ['I39PBJTI'],

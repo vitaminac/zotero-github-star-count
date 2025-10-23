@@ -3,9 +3,9 @@
     "dalao1002@gmail.com": {
       "updates": [
         {
-          "version": "1.0.7",
-          "update_link": "https://github.com/vitaminac/zotero-github-star-count/releases/download/v1.0.7/zotero-github-star-count-1.0.7.xpi",
-          "update_hash": "sha256:2b4a1ea90e5b6f441f1648fe9f55bf96fb4f62adfada1ed54515d9e0a2e7a39e",
+          "version": "1.0.8",
+          "update_link": "https://github.com/vitaminac/zotero-github-star-count/releases/download/v1.0.8/zotero-github-star-count-1.0.8.xpi",
+          "update_hash": "sha256:1313e50123faafef30c6a8a402097dddabc6f108abf0c63f27befc9a76a668c2",
           "applications": {
             "zotero": {
               "strict_min_version": "6.999",

@@ -1,18 +1,9 @@
 #!/bin/sh
 
 # set the version for our plugin
-version="1.0.7"
+version="1.0.8"
 min_zotero_version="6.999"
 max_zotero_version="7.0.*"
-
-rm -rf build
-mkdir -p build
-cd src
-# zip with consistent hash
-find . -type f -print0 | xargs -0 touch -t 202510210000
-LC_ALL=C find . -type f | sort > ../build/file-list.txt
-zip -0 -X -@ ../build/zotero-github-star-count-${version}.xpi < ../build/file-list.txt
-cd ..
 
 # patch plugin version
 sed -i -E "s/\"version\": *\"[^\"]+\"/\"version\": \"${version}\"/" package.json
@@ -22,6 +13,16 @@ sed -i -E "s/\"strict_min_version\": *\"[^\"]+\"/\"strict_min_version\": \"${min
 sed -i -E "s/\"strict_min_version\": *\"[^\"]+\"/\"strict_min_version\": \"${min_zotero_version}\"/" src/manifest.json
 sed -i -E "s/\"strict_max_version\": *\"[^\"]+\"/\"strict_max_version\": \"${max_zotero_version}\"/" updates.json
 sed -i -E "s/\"strict_max_version\": *\"[^\"]+\"/\"strict_max_version\": \"${max_zotero_version}\"/" src/manifest.json
+
+# create xpi file
+rm -rf build
+mkdir -p build
+cd src
+# zip with consistent hash
+find . -type f -print0 | xargs -0 touch -t 202510210000
+LC_ALL=C find . -type f | sort > ../build/file-list.txt
+zip -0 -X -@ ../build/zotero-github-star-count-${version}.xpi < ../build/file-list.txt
+cd ..
 
 # patch update link
 updatelink="https://github.com/vitaminac/zotero-github-star-count/releases/download/v${version}/zotero-github-star-count-${version}.xpi"

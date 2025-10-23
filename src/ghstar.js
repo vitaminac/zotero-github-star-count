@@ -553,6 +553,12 @@ $__ghstar.app = {
         continue;
       }
 
+      const githubRepoUrlRegex = /^https\:\/\/github\.com\/([^\/]+)\/([^\/]+)/;
+      const match = githubRepoUrl.match(githubRepoUrlRegex);
+      const owner = match[1];
+      const repo = match[2];
+      const normalizedGithubRepoUrl = `https://github.com/${owner}/${repo}`;
+
       // check the prefs in case user override, don't use it on the first item
       // either way
       if (useQueue && index > 0) {
@@ -565,11 +571,11 @@ $__ghstar.app = {
         await $__ghstar.util.sleep(queueTime);
       }
 
-      const response = await this.retrieveGithubStarCountData(githubRepoUrl);
+      const response = await this.retrieveGithubStarCountData(normalizedGithubRepoUrl);
       await this.processGithubStarResponse(
         response.status,
         response.responseText,
-        githubRepoUrl,
+        normalizedGithubRepoUrl,
         response.responseURL,
         item,
       );
@@ -661,7 +667,7 @@ $__ghstar.app = {
    * @param {function} callback callback on complete
    */
   retrieveGithubStarCountData: async function (githubRepoUrl) {
-    const targetUrl = await this.generateItemUrl(githubRepoUrl);
+    const targetUrl = await this.getGithubRestApiUrl(githubRepoUrl);
     return $__ghstar.util.request({ method: 'GET', url: targetUrl });
   },
   /**
@@ -724,9 +730,8 @@ $__ghstar.app = {
    * @param {string} Github repository URL
    * @returns string
    */
-  generateItemUrl: async function (githubRepoUrl) {
+  getGithubRestApiUrl: async function (githubRepoUrl) {
     const apiEndpoint = await $__ghstar.app.getApiEndpoint();
-
     const targetUrl = githubRepoUrl.replace(/^https:\/\/github.com\//, `${apiEndpoint.href}repos/`);
     $__ghstar.debugger.info(`Github API Endpoint Ready: ${targetUrl}`);
 

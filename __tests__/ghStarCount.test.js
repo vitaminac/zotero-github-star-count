@@ -39,8 +39,8 @@ describe('Verify $__ghstar.app sanity', () => {
     });
   });
 
-  it('generateItemUrl() should output string', async () => {
-    const string = await base.$__ghstar.app.generateItemUrl(
+  it('getGithubRestApiUrl() should output string', async () => {
+    const string = await base.$__ghstar.app.getGithubRestApiUrl(
       singleItemNoCount.data.url,
     );
     expect(string).toEqual(
@@ -98,7 +98,7 @@ describe('Verify $__ghstar.app sanity', () => {
 
   it('processGithubStarResponse() 200 should set item data', () => {
     const item = { ...singleItemSoftware.data };
-    const targetUrl = base.$__ghstar.app.generateItemUrl(item.url);
+    const targetUrl = base.$__ghstar.app.getGithubRestApiUrl(item.url);
     base.$__ghstar.app.processGithubStarResponse(
       200,
       hasStarCount.data,

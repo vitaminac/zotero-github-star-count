@@ -1,15 +1,28 @@
-var $__ghstar;
+'use strict';
+/* global Components, Services */
+/* global $__ghstar */
+
+const { classes: Cc, utils: Cu, interfaces: Ci } = Components;
+let chromeHandle;
 
 function log(msg) {
   Zotero.debug('GHSTAR:' + msg);
 }
 
 function install() {
-  log('Installed GHSTAR 4.0.0');
+  log('Installed GHSTAR 8.0.0');
 }
 
 async function startup({ id, version, rootURI }) {
-  log('Starting GHSTAR 4.0.0');
+  log('Starting GHSTAR 8.0.0');
+
+  const aomStartup = Cc['@mozilla.org/addons/addon-manager;1'].getService(
+    Ci.amIAddonManagerStartup,
+  );
+  var manifestURI = Services.io.newURI(rootURI + 'manifest.json');
+  chromeHandle = aomStartup.registerChrome(manifestURI, [
+    ['content', 'ghstar', rootURI],
+  ]);
 
   const filePath = `${rootURI}/ghstar.js`;
   Services.scriptloader.loadSubScript(filePath);

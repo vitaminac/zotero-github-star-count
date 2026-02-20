@@ -1,3 +1,4 @@
+'use strict';
 /**
  * A short hand typedef for general use, not exhaustive of the Zotero Schema
  * @typedef {Object} ZoteroGenericItem
@@ -34,8 +35,6 @@
  * @property {String} lastName
  * @property {String} creatorType
  */
-
-Components.utils.import('resource://gre/modules/Services.jsm');
 
 $__ghstar = {};
 

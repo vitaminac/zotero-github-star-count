@@ -87,3 +87,6 @@ typings/
 # Custom Misc
 build/
 builds/
+
+# Mac
+.DS_Store

@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Github Star Count",
-  "version": "1.0.8",
+  "version": "8.0.0",
   "description": "Zotero plugin for fetching Github star.",
   "homepage_url": "https://github.com/vitaminac/zotero-github-star-count",
   "author": "vitaminac",
@@ -13,8 +13,8 @@
     "zotero": {
       "id": "dalao1002@gmail.com",
       "update_url": "https://raw.githubusercontent.com/vitaminac/zotero-github-star-count/main/updates.json",
-      "strict_min_version": "6.999",
-      "strict_max_version": "7.0.*"
+      "strict_min_version": "7.999",
+      "strict_max_version": "8.*"
     }
   }
 }

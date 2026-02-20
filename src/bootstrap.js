@@ -13,10 +13,10 @@ function install() {
   log('Installed GHSTAR 8.0.0');
 }
 
-async function startup({ id, version, rootURI }) {
+async function startup({ id, version, rootURI }, reason) {
   log('Starting GHSTAR 8.0.0');
 
-  const aomStartup = Cc['@mozilla.org/addons/addon-manager;1'].getService(
+  var aomStartup = Cc['@mozilla.org/addons/addon-manager-startup;1'].getService(
     Ci.amIAddonManagerStartup,
   );
   var manifestURI = Services.io.newURI(rootURI + 'manifest.json');

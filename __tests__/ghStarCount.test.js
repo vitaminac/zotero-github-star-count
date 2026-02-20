@@ -143,8 +143,8 @@ describe('Verify $__ghstar.app sanity', () => {
 
   it('processItems burns correctly', async () => {
     const info = jest.spyOn(base.$__ghstar.debugger, 'info');
-    jest.spyOn($__ghstar.app, 'retrieveGithubStarCountData');
-    jest.spyOn($__ghstar.app, 'processGithubStarResponse');
+    jest.spyOn(base.$__ghstar.app, 'retrieveGithubStarCountData');
+    jest.spyOn(base.$__ghstar.app, 'processGithubStarResponse');
     await base.$__ghstar.app.processItems(itemsList);
   });
 

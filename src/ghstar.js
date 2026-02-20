@@ -36,7 +36,7 @@
  * @property {String} creatorType
  */
 
-$__ghstar = {};
+const $__ghstar = {};
 
 $__ghstar.debugger = {
   /**

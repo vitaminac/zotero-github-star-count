@@ -4,8 +4,8 @@
       "updates": [
         {
           "version": "9.0.0",
-          "update_link": "https://github.com/vitaminac/zotero-github-star-count/releases/download/v8.0.3/zotero-github-star-count-8.0.3.xpi",
-          "update_hash": "sha256:74afc5b03049d90606a58f27e49cec54ec95078eb878aa2806b38ace75c193cf",
+          "update_link": "https://github.com/vitaminac/zotero-github-star-count/releases/download/v9.0.0/zotero-github-star-count-9.0.0.xpi",
+          "update_hash": "sha256:39ded0c6e036d253764d1701c970e2a33a544997de14ac9687219f6ae88370ba",
           "applications": {
             "zotero": {
               "strict_min_version": "8.999",

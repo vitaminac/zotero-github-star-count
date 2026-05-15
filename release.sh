@@ -1,9 +1,9 @@
 #!/bin/sh
 
 # set the version for our plugin
-version="8.0.3"
-min_zotero_version="7.999"
-max_zotero_version="8.*"
+version="9.0.0"
+min_zotero_version="8.999"
+max_zotero_version="9.*"
 
 # patch plugin version
 sed -i -E "s/\"version\": *\"[^\"]+\"/\"version\": \"${version}\"/" package.json
